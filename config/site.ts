@@ -22,7 +22,7 @@ export const siteConfig = {
 
   // ── Hero Section ─────────────────────────────────────────────────────────
   hero: {
-    badge: "Now Accepting Founding Members",
+    badge: "Members who build stuff ",
     headline: ["Engineering the", "Future of Business", "at IISER Bhopal"],
     subheadline:
       "Where scientific rigor meets the audacity to build. E-Cell is the launchpad for student-led ventures, breakthrough ideas, and the next generation of deep-tech founders.",
@@ -117,10 +117,10 @@ export const siteConfig = {
     address: "Bhauri, Bhopal Bypass Road, Bhopal - 462066, Madhya Pradesh",
     email: "ecell@iiserbhopal.ac.in",
     socials: [
-      { label: "LinkedIn", href: "https://linkedin.com/company/ecell-iiser-bhopal", icon: "Linkedin" },
-      { label: "Instagram", href: "https://instagram.com/ecell_iiserbhopal", icon: "Instagram" },
-      { label: "Twitter / X", href: "https://twitter.com/ecell_iiserbh", icon: "Twitter" },
-      { label: "GitHub", href: "https://github.com/ecell-iiserbhopal", icon: "Github" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/ecell-sdc-iiser-bhopal/", icon: "Linkedin" },
+      { label: "Instagram", href: "https://www.instagram.com/ecell_iiserb?igsh=c2U2c3F4YTM5ejZs", icon: "Instagram" },
+      { label: "Twitter / X", href: "#", icon: "Twitter" },
+      { label: "GitHub", href: "#", icon: "Github" },
     ],
     copyright: `© ${new Date().getFullYear()} E-Cell IISER Bhopal. All rights reserved.`,
     legalLinks: [
