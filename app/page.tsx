@@ -65,9 +65,12 @@ export const metadata: Metadata = {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a]">
+    // REMOVED: bg-[#0a0a0a] so the background is completely transparent!
+    <main className="min-h-screen">
       {/* 1. Hero — Above the fold. Sells the vision immediately. */}
       <Hero />
 
@@ -82,3 +85,4 @@ export default function HomePage() {
     </main>
   );
 }
+

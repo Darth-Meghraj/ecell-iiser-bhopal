@@ -5,10 +5,8 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better dev-time warnings
   reactStrictMode: true,
 
-  // Enable experimental typed routes (Vercel-recommended)
-  experimental: {
-    typedRoutes: true,
-  },
+  // Moved typedRoutes out of experimental (Vercel-recommended)
+  typedRoutes: true,
 
   // Vercel image optimization: allow IISER domain if you pull images from there
   images: {

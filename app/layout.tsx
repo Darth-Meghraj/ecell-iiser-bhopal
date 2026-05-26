@@ -39,7 +39,7 @@ export default function RootLayout({
         <StarStream /> 
 
         {/* 2. Pull all website content UP a layer so it sits on top of the stars */}
-        <div className="relative z-10">
+        <div className="relative z-[10]">
           <Navbar />
           {children}
         </div>
