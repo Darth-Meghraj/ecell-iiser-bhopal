@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image"; // <-- Added Image import
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -36,9 +37,15 @@ export default function Navbar() {
         <nav className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.2)] group-hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] transition-all duration-300">
-              <span className="text-black font-black text-xs tracking-tight">EC</span>
-            </div>
+            {/* Swapped placeholder for actual Image */}
+            <Image 
+              src="/logo.png" 
+              alt="E-Cell Logo" 
+              width={32} 
+              height={32} 
+              className="object-contain"
+              style={{ width: "auto", height: "auto" }}
+            />
             <span className="text-white font-bold text-sm tracking-tight hidden sm:block">
               E-Cell{" "}
               <span className="text-white/30 font-normal font-mono text-xs">IISER Bhopal</span>
