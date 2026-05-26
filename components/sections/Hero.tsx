@@ -4,7 +4,7 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 // ── Stat Card ─────────────────────────────────────────────────────────────────
@@ -128,22 +128,6 @@ export default function Hero() {
           {hero.stats.map((stat, i) => (
             <StatCard key={stat.label} value={stat.value} label={stat.label} delay={0.9 + i * 0.1} />
           ))}
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
-      >
-        <span className="text-xs font-mono text-white/25 uppercase tracking-widest">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown size={16} className="text-white/25" />
         </motion.div>
       </motion.div>
     </section>
