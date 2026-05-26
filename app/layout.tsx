@@ -6,12 +6,12 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import StarStream from "@/components/ui/StarStream";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "E-Cell IISER Bhopal",
   description:
-    "The Entrepreneurship Cell at IISER Bhopal — where scientific rigor meets the audacity to build.",
+    "The Entrepreneurship Cell at IISER Bhopal , where scientific rigor meets the audacity to build.",
 };
 
 export default function RootLayout({
