@@ -1,8 +1,4 @@
 // app/layout.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// Root layout: font loading (Geist Sans + Geist Mono via next/font),
-// global providers, and the persistent Navbar.
-// ─────────────────────────────────────────────────────────────────────────────
 
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
@@ -10,7 +6,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import StarStream from "@/components/ui/StarStream";
-import { Analytics } from "@vercel/analytics/react"; // <-- 1. Analytics Import Added
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "E-Cell IISER Bhopal",
@@ -36,14 +32,12 @@ export default function RootLayout({
           "selection:bg-cyan-400/20 selection:text-cyan-300",
         ].join(" ")}
       >
-        {/* 1. Stars stay at the absolute bottom layer */}
         <StarStream /> 
-
-        {/* 2. Pull all website content UP a layer so it sits on top of the stars */}
+        
         <div className="relative z-[10]">
           <Navbar />
           {children}
-          <Analytics /> {/* <-- 2. Analytics Component Added */}
+          <Analytics />
         </div>
       </body>
     </html>

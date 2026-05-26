@@ -11,6 +11,7 @@ import BentoGrid from "@/components/sections/BentoGrid";
 import PitchPortal from "@/components/sections/PitchPortal";
 import Footer from "@/components/sections/Footer";
 import InstaFeed from "@/components/sections/InstaFeed";
+import ScrollIntro from "@/components/ScrollIntro";
 
 
 
@@ -74,6 +75,8 @@ export default function HomePage() {
   return (
     // REMOVED: bg-[#0a0a0a] so the background is completely transparent!
     <main className="min-h-screen">
+
+      <ScrollIntro />
       {/* 1. Hero — Above the fold. Sells the vision immediately. */}
       <Hero />
 

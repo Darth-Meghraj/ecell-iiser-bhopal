@@ -3,7 +3,6 @@
 /* Tailwind base, custom properties, and global overrides.                    */
 /* ─────────────────────────────────────────────────────────────────────────── */
 
-/* Add this single line instead */
 @import "tailwindcss";
 
 /* ── CSS Custom Properties ───────────────────────────────────────────────── */
@@ -63,24 +62,20 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
 }
 
-/* ── Glass Morphism Utility ──────────────────────────────────────────────── */
+/* ── Glass Morphism & Tailwind Utilities ─────────────────────────────────── */
 @layer utilities {
- @layer utilities {
   .glass {
-    backdrop-filter: blur(24px); /* matches backdrop-blur-xl */
+    backdrop-filter: blur(24px);
     background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   .glass-heavy {
-    backdrop-filter: blur(40px); /* matches backdrop-blur-2xl */
+    backdrop-filter: blur(40px);
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.10);
   }
   
-  /* glow-cyan and glow-violet are fine as they are! */
-}
-
   .glow-cyan {
     box-shadow: 0 0 32px rgba(34, 211, 238, 0.15);
   }
@@ -90,18 +85,32 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .text-gradient-cyan-violet {
-  background-image: linear-gradient(to right, #22d3ee, #67e8f9, #a78bfa);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-}
+    background-image: linear-gradient(to right, #22d3ee, #67e8f9, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-/* ── Animation Utilities ─────────────────────────────────────────────────── */
-@layer utilities {
   .animate-glow-pulse {
     animation: glow-pulse 3s ease-in-out infinite;
   }
+}
+
+/* ── Form Reset Helpers ──────────────────────────────────────────────────── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #0d0d0f inset;
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── Claude's Added Animations ───────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes glow-pulse {
@@ -113,14 +122,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ── Form Reset Helpers ──────────────────────────────────────────────────── */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill {
-  /* Prevent Chrome's autofill white background from breaking dark theme */
-  -webkit-box-shadow: 0 0 0 1000px #0d0d0f inset;
-  -webkit-text-fill-color: #ffffff;
-  caret-color: #ffffff;
-  transition: background-color 5000s ease-in-out 0s;
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
