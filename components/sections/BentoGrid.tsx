@@ -234,7 +234,7 @@ export default function BentoGrid() {
           <div>
             <p className="text-sm font-bold text-white mb-1">Want to shape what we build?</p>
             <p className="text-xs text-white/40 font-mono">
-              Founding members get a seat at the table — and early access to every program.
+              Members get a seat at the table — and early access to every program.
             </p>
           </div>
           <a href="#pitch">
