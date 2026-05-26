@@ -9,6 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
+import StarStream from "@/components/ui/StarStream"; // <-- 1. Imported here
 
 export const metadata: Metadata = {
   title: "E-Cell IISER Bhopal",
@@ -34,6 +35,9 @@ export default function RootLayout({
           "selection:bg-cyan-400/20 selection:text-cyan-300",
         ].join(" ")}
       >
+        {/* The looping background canvas */}
+        <StarStream /> 
+
         {/* Persistent navigation */}
         <Navbar />
 
