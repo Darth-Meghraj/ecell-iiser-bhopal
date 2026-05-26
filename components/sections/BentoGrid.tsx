@@ -243,7 +243,7 @@ export default function BentoGrid() {
               whileTap={{ scale: 0.97 }}
               className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300 text-sm font-semibold hover:bg-cyan-400/20 transition-all duration-200"
             >
-              Join as Founding Member
+              Join as a Member
               <Rocket size={14} />
             </motion.button>
           </a>
