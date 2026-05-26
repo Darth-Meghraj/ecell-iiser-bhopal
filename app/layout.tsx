@@ -9,7 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
-import StarStream from "@/components/ui/StarStream"; // <-- 1. Imported here
+import StarStream from "@/components/ui/StarStream";
 
 export const metadata: Metadata = {
   title: "E-Cell IISER Bhopal",
@@ -35,14 +35,14 @@ export default function RootLayout({
           "selection:bg-cyan-400/20 selection:text-cyan-300",
         ].join(" ")}
       >
-        {/* The looping background canvas */}
+        {/* 1. Stars stay at the absolute bottom layer */}
         <StarStream /> 
 
-        {/* Persistent navigation */}
-        <Navbar />
-
-        {/* Page content */}
-        {children}
+        {/* 2. Pull all website content UP a layer so it sits on top of the stars */}
+        <div className="relative z-10">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );
