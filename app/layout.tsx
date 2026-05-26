@@ -10,6 +10,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import StarStream from "@/components/ui/StarStream";
+import { Analytics } from "@vercel/analytics/react"; // <-- 1. Analytics Import Added
 
 export const metadata: Metadata = {
   title: "E-Cell IISER Bhopal",
@@ -42,6 +43,7 @@ export default function RootLayout({
         <div className="relative z-[10]">
           <Navbar />
           {children}
+          <Analytics /> {/* <-- 2. Analytics Component Added */}
         </div>
       </body>
     </html>
