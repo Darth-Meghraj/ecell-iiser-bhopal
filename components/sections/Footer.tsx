@@ -6,14 +6,18 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Mail, MapPin, ExternalLink, Globe, Hexagon } from "lucide-react";
+import Image from "next/image";
+import { Mail, MapPin, ExternalLink } from "lucide-react"; 
+// Pulling the EXACT official brand logos from react-icons
+import { FaLinkedin, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 import { siteConfig } from "@/config/site";
 
+// Mapping your siteConfig strings to the official brand SVGs
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
-  Linkedin: Globe,
-  Instagram: Hexagon,
-  Twitter: Globe,
-  Github: Hexagon,
+  Linkedin: FaLinkedin,
+  Instagram: FaInstagram,
+  Twitter: FaXTwitter, // Uses the official "X" logo
+  Github: FaGithub,
 };
 
 export default function Footer() {
@@ -36,9 +40,13 @@ export default function Footer() {
           >
             {/* Logo mark */}
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center">
-                <span className="text-black font-black text-sm tracking-tight">EC</span>
-              </div>
+              <Image 
+                src="/logo.png" 
+                alt="E-Cell Logo" 
+                width={36} 
+                height={36} 
+                className="object-contain w-auto h-auto"
+              />
               <div>
                 <div className="text-white font-bold text-sm tracking-tight">{shortName}</div>
                 <div className="text-white/30 text-xs font-mono">IISER Bhopal</div>
@@ -48,7 +56,7 @@ export default function Footer() {
 
             {/* Social icons */}
             <div className="flex items-center gap-3">
-              {footer.socials.map((social) => {
+              {footer.socials.map((social: any) => {
                 const Icon = SOCIAL_ICONS[social.icon] ?? ExternalLink;
                 return (
                   <motion.a
@@ -61,7 +69,7 @@ export default function Footer() {
                     whileTap={{ scale: 0.95 }}
                     className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 hover:bg-white/[0.06] transition-all duration-200"
                   >
-                    <Icon size={15} />
+                    <Icon size={16} />
                   </motion.a>
                 );
               })}
@@ -106,7 +114,7 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {siteConfig.nav.map((link) => (
+              {siteConfig.nav.map((link: any) => (
                 <li key={link.href}>
                   <Link
                     href={{ pathname: link.href }}
