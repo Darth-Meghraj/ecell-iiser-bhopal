@@ -1,26 +1,126 @@
+/* app/globals.css */
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Tailwind base, custom properties, and global overrides.                    */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Add this single line instead */
 @import "tailwindcss";
 
+/* ── CSS Custom Properties ───────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg: #0a0a0a;
+  --color-surface: #0d0d0f;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-cyan: #22d3ee;
+  --color-violet: #8b5cf6;
+  --color-green: #34d399;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Fira Code", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Global Resets ───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default focus for mouse users, keep for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Typography Scale ────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* ── Glass Morphism Utility ──────────────────────────────────────────────── */
+@layer utilities {
+ @layer utilities {
+  .glass {
+    backdrop-filter: blur(24px); /* matches backdrop-blur-xl */
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .glass-heavy {
+    backdrop-filter: blur(40px); /* matches backdrop-blur-2xl */
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  
+  /* glow-cyan and glow-violet are fine as they are! */
+}
+
+  .glow-cyan {
+    box-shadow: 0 0 32px rgba(34, 211, 238, 0.15);
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 32px rgba(139, 92, 246, 0.15);
+  }
+
+  .text-gradient-cyan-violet {
+  background-image: linear-gradient(to right, #22d3ee, #67e8f9, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+}
+
+/* ── Animation Utilities ─────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(34, 211, 238, 0.4);
+  }
+}
+
+/* ── Form Reset Helpers ──────────────────────────────────────────────────── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  /* Prevent Chrome's autofill white background from breaking dark theme */
+  -webkit-box-shadow: 0 0 0 1000px #0d0d0f inset;
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
 }
