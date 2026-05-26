@@ -49,17 +49,17 @@ export const siteConfig = {
           "A dedicated physical and virtual space for student ventures. We'll provide mentorship, prototyping resources, and a structured program to take your idea from whiteboard to MVP.",
         accent: "cyan",
         size: "large", // spans 2 cols
-        comingSoon: "Q3 2025",
+        comingSoon: "Fingers Crossed",
       },
       {
         id: "hackathons",
         icon: "Zap",
         title: "Hackathons & Sprints",
         description:
-          "48-hour intensive builds. Cross-disciplinary teams. Real problem statements from industry partners. The pressure-cooker that forges real founders.",
+          "NA",
         accent: "violet",
         size: "small",
-        comingSoon: "First Hackathon: Aug 2025",
+        comingSoon: "First Hackathon: Aug 2026(Hopefully!!!)",
       },
       {
         id: "mentorship",
