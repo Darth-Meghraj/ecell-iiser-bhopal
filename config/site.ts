@@ -30,7 +30,7 @@ export const siteConfig = {
     ctaSecondary: { label: "Our Vision", href: "#vision" },
     stats: [
       { value: "∞", label: "Ideas Welcome" },
-      { value: "01", label: "Founding Year" },
+      { value: "2024", label: "Founding Year" },
       { value: "100+", label: "Students Ready" },
       { value: "IISER", label: "World-Class Research" },
     ],
@@ -39,7 +39,7 @@ export const siteConfig = {
   // ── Bento Grid / Pillars ─────────────────────────────────────────────────
   pillars: {
     sectionLabel: "What We're Building",
-    headline: "Four Pillars of the Entrepreneurial Ecosystem",
+    headline: " Pillars of the Entrepreneurial Ecosystem",
     items: [
       {
         id: "incubation",
