@@ -22,10 +22,10 @@ export const siteConfig = {
 
   // ── Hero Section ─────────────────────────────────────────────────────────
   hero: {
-    badge: "Members who build stuff ",
-    headline: ["Engineering the", "Future of Business", "at IISER Bhopal"],
+    badge: "From Lab to Launchpad ",
+    headline: ["Turn Breakthroughs", "Into Businesses", "at IISER Bhopal"],
     subheadline:
-      "Where scientific rigor meets the audacity to build. E-Cell is the launchpad for student led ventures, breakthrough ideas, and the next generation of deep-tech founders.",
+      "Stop waiting. Start shipping. E-Cell is the premier ecosystem for IISER students building the next generation of science-backed companies.",
     ctaPrimary: { label: "Pitch Your Idea", href: "#pitch" },
     ctaSecondary: { label: "Our Vision", href: "#vision" },
     stats: [
