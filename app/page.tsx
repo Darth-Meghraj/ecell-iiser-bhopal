@@ -10,6 +10,9 @@ import Hero from "@/components/sections/Hero";
 import BentoGrid from "@/components/sections/BentoGrid";
 import PitchPortal from "@/components/sections/PitchPortal";
 import Footer from "@/components/sections/Footer";
+import InstaFeed from "@/components/sections/InstaFeed";
+
+
 
 // ── Metadata ──────────────────────────────────────────────────────────────────
 // Statically generated — no dynamic data needed for SEO.
@@ -76,11 +79,14 @@ export default function HomePage() {
 
       {/* 2. Bento Grid — The "What We're Building" pillars */}
       <BentoGrid />
+      
+      {/* 3. Instagram Feed — Social proof, FOMO, and a peek into the community */}
+       <InstaFeed /> 
 
-      {/* 3. Pitch Portal — The primary conversion goal of the site */}
+      {/* 4. Pitch Portal — The primary conversion goal of the site */}
       <PitchPortal />
 
-      {/* 4. Footer */}
+      {/* 5. Footer */}
       <Footer />
     </main>
   );
