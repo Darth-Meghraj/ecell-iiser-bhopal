@@ -25,7 +25,7 @@ export const siteConfig = {
     badge: "Members who build stuff ",
     headline: ["Engineering the", "Future of Business", "at IISER Bhopal"],
     subheadline:
-      "Where scientific rigor meets the audacity to build. E-Cell is the launchpad for student-led ventures, breakthrough ideas, and the next generation of deep-tech founders.",
+      "Where scientific rigor meets the audacity to build. E-Cell is the launchpad for student led ventures, breakthrough ideas, and the next generation of deep-tech founders.",
     ctaPrimary: { label: "Pitch Your Idea", href: "#pitch" },
     ctaSecondary: { label: "Our Vision", href: "#vision" },
     stats: [
