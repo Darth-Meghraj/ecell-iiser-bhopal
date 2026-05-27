@@ -155,35 +155,26 @@ function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MAIN
+// MAIN  — one-time experience, no scroll-up replay
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ScrollIntro() {
-  const containerRef  = useRef<HTMLDivElement>(null);
-  const autoCtrlRef   = useRef<ReturnType<typeof animate> | null>(null);
-  const prevScrollRef = useRef(0);
-  const handedOffRef  = useRef(false);
-  
-  const [isDone, setIsDone]   = useState(false);
-  // 🚀 NEW: State to entirely unmount the container
-  const [isMounted, setIsMounted] = useState(true); 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const autoCtrlRef  = useRef<ReturnType<typeof animate> | null>(null);
+  const doneRef      = useRef(false); // guard so we never replay
+
+  const [isDone, setIsDone] = useState(false);
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
 
-  // 🚀 NEW: Check if the user has already seen the intro this browser session
-  useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("ecell-intro-played") === "true") {
-      setIsMounted(false); // If yes, don't even mount the animation
-    }
-  }, []);
-
+  // ── Progress sources ──────────────────────────────────────────────────
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  
   const scrollProg = useMotionValue<number>(0);
   const autoProg   = useMotionValue<number>(0);
   const progress   = useMotionValue<number>(0);
 
+  // Combined: whichever is ahead
   useEffect(() => {
     const sync = () => progress.set(Math.max(autoProg.get(), scrollProg.get()));
     const ua = autoProg.on("change", sync);
@@ -191,89 +182,40 @@ export default function ScrollIntro() {
     return () => { ua(); us(); };
   }, [autoProg, scrollProg, progress]);
 
-  const reset = useCallback(() => {
-    autoCtrlRef.current?.stop();
-    autoCtrlRef.current = null;
-    autoProg.set(0);
-    scrollProg.set(0);
-    progress.set(0);
-    handedOffRef.current = false;
-    setIsDone(false);
-    setSc({ sys: false, ecell: false, sub: false });
-  }, [autoProg, scrollProg, progress]);
-
-  // 🚀 UPDATED: The Kill Switch + Memory Save
-  const finishIntro = useCallback(() => {
-    if (isDone) return;
-    
-    // Save to session memory so it never plays again until they restart the browser
-    sessionStorage.setItem("ecell-intro-played", "true");
-    
-    // Trigger the opacity fade out
+  // ── Finish handler ────────────────────────────────────────────────────
+  const finish = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
     setIsDone(true);
+    // If auto-played (user didn't scroll), jump DOM scroll to end of container
+    // so the hero is immediately visible with no blank gap
+    if (scrollYProgress.get() < 0.5 && containerRef.current) {
+      window.scrollTo({ top: containerRef.current.offsetHeight, behavior: "instant" });
+    }
+  }, [scrollYProgress]);
 
-    // Wait exactly 0.3s for the fade to finish, then delete the HTML and jump to Hero
-    setTimeout(() => {
-      setIsMounted(false); 
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }, 300);
-  }, [isDone]);
-
+  // ── Auto-play once on mount ───────────────────────────────────────────
   const startAuto = useCallback(() => {
-    if (!isMounted) return;
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = animate(autoProg, 1, {
       duration: 12,
       ease: [0.42, 0, 0.48, 1],
-      onComplete: () => setTimeout(() => {
-        finishIntro();
-      }, 300),
+      onComplete: () => setTimeout(finish, 300),
     });
-  }, [autoProg, finishIntro, isMounted]);
+  }, [autoProg, finish]);
 
   useEffect(() => {
-    if (!isMounted) return;
     const t = setTimeout(() => startAuto(), 1500);
     return () => clearTimeout(t);
-  }, [startAuto, isMounted]);
+  }, [startAuto]);
 
+  // ── Mirror scroll into scrollProg; finish if scroll reaches end ───────
   useMotionValueEvent(scrollYProgress, "change", (v: number) => {
-    if (!isMounted) return;
-    
-    const prev   = prevScrollRef.current;
-    const goingUp = v < prev - 0.001;
-    prevScrollRef.current = v;
-
-    if (goingUp) {
-      if (autoCtrlRef.current && !handedOffRef.current) {
-        handedOffRef.current = true;
-        autoCtrlRef.current.stop();
-        autoCtrlRef.current = null;
-        autoProg.set(0);
-      }
-      if (v < 0.03) {
-        reset();
-        setTimeout(() => startAuto(), 800);
-        return;
-      }
-    }
-
-    if (!goingUp && handedOffRef.current && !autoCtrlRef.current && v > 0.03) {
-      handedOffRef.current = false;
-      autoProg.set(v);
-      autoCtrlRef.current = animate(autoProg, 1, {
-        duration: 12 * (1 - v),
-        ease: "linear",
-        onComplete: () => setTimeout(() => {
-          finishIntro();
-        }, 300),
-      });
-    }
-
-    if (v >= 0.99) finishIntro();
     scrollProg.set(v);
+    if (v >= 0.99) finish();
   });
 
+  // ── Derived transforms ────────────────────────────────────────────────
   const textY        = useTransform(progress, [0.22, 0.40], [80, 0]);
   const textOpacity  = useTransform(progress, [0.22, 0.36, 0.80, 0.92], [0, 1, 1, 0]);
   const textScale    = useTransform(progress, [0.80, 0.93], [1, 2]);
@@ -287,10 +229,6 @@ export default function ScrollIntro() {
   useMotionValueEvent(progress, "change", (v: number) => {
     setSc({ sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 });
   });
-
-  // 🚀 THE ULTIMATE KILL SWITCH: If it's done or memory says they saw it, render NOTHING!
-  // This physically deletes the 400vh invisible container from the DOM.
-  if (!isMounted) return null;
 
   return (
     <>
@@ -315,9 +253,9 @@ export default function ScrollIntro() {
           position: "sticky", top: 0, height: "100vh", width: "100%",
           overflow: "hidden", background: "#050508",
           display: "flex", alignItems: "center", justifyContent: "center",
-          opacity: isDone ? 0 : introOpacity,           
-          pointerEvents: isDone ? "none" : "auto",      
-          transition: isDone ? "opacity 0.3s" : "none", // Matches the setTimeout
+          opacity: isDone ? 0 : introOpacity,
+          pointerEvents: isDone ? "none" : "auto",
+          transition: isDone ? "opacity 0.3s" : "none",
         }}>
 
           <motion.div className="scanline" style={{ opacity: scanOpacity }} aria-hidden />
