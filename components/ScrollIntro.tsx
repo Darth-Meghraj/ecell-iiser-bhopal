@@ -158,18 +158,28 @@ function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue
 // MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ScrollIntro() {
-  const containerRef    = useRef<HTMLDivElement>(null);
-  const autoCtrlRef     = useRef<ReturnType<typeof animate> | null>(null);
-  const prevScrollRef   = useRef(0);
-  const handedOffRef    = useRef(false);
-
-  const [isDone, setIsDone] = useState(false);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const autoCtrlRef   = useRef<ReturnType<typeof animate> | null>(null);
+  const prevScrollRef = useRef(0);
+  const handedOffRef  = useRef(false);
+  
+  const [isDone, setIsDone]   = useState(false);
+  // 🚀 NEW: State to entirely unmount the container
+  const [isMounted, setIsMounted] = useState(true); 
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
+
+  // 🚀 NEW: Check if the user has already seen the intro this browser session
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("ecell-intro-played") === "true") {
+      setIsMounted(false); // If yes, don't even mount the animation
+    }
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
+  
   const scrollProg = useMotionValue<number>(0);
   const autoProg   = useMotionValue<number>(0);
   const progress   = useMotionValue<number>(0);
@@ -192,44 +202,45 @@ export default function ScrollIntro() {
     setSc({ sys: false, ecell: false, sub: false });
   }, [autoProg, scrollProg, progress]);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // THE ONLY THING CHANGED FROM THE ORIGINAL:
-  //
-  // When the auto-animation completes, if the user hasn't scrolled past
-  // the intro themselves (scrollYProgress < 0.5), we call window.scrollTo
-  // to land them at the top of the hero section (= bottom of this container).
-  //
-  // Without this, progress reaches 1.0 via the motion value but the actual
-  // DOM scroll position is still 0 — so the overlay turns invisible and the
-  // user sees 400 vh of blank space instead of the hero.
-  // ─────────────────────────────────────────────────────────────────────
-  const scrollToHero = useCallback(() => {
-    if (scrollYProgress.get() < 0.5 && containerRef.current) {
-      // Instant jump — no smooth scroll delay means no black flash between
-      // the overlay turning transparent and the hero coming into view.
-      window.scrollTo(0, containerRef.current.offsetHeight);
-    }
-  }, [scrollYProgress]);
+  // 🚀 UPDATED: The Kill Switch + Memory Save
+  const finishIntro = useCallback(() => {
+    if (isDone) return;
+    
+    // Save to session memory so it never plays again until they restart the browser
+    sessionStorage.setItem("ecell-intro-played", "true");
+    
+    // Trigger the opacity fade out
+    setIsDone(true);
+
+    // Wait exactly 0.3s for the fade to finish, then delete the HTML and jump to Hero
+    setTimeout(() => {
+      setIsMounted(false); 
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }, 300);
+  }, [isDone]);
 
   const startAuto = useCallback(() => {
+    if (!isMounted) return;
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = animate(autoProg, 1, {
       duration: 12,
       ease: [0.42, 0, 0.48, 1],
       onComplete: () => setTimeout(() => {
-        setIsDone(true);
-        scrollToHero();           // ← only new line
+        finishIntro();
       }, 300),
     });
-  }, [autoProg, scrollToHero]);
+  }, [autoProg, finishIntro, isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return;
     const t = setTimeout(() => startAuto(), 1500);
     return () => clearTimeout(t);
-  }, [startAuto]);
+  }, [startAuto, isMounted]);
 
   useMotionValueEvent(scrollYProgress, "change", (v: number) => {
-    const prev    = prevScrollRef.current;
+    if (!isMounted) return;
+    
+    const prev   = prevScrollRef.current;
     const goingUp = v < prev - 0.001;
     prevScrollRef.current = v;
 
@@ -254,13 +265,12 @@ export default function ScrollIntro() {
         duration: 12 * (1 - v),
         ease: "linear",
         onComplete: () => setTimeout(() => {
-          setIsDone(true);
-          scrollToHero();           // ← same fix for the re-start-auto path
+          finishIntro();
         }, 300),
       });
     }
 
-    if (v >= 0.99) setIsDone(true);
+    if (v >= 0.99) finishIntro();
     scrollProg.set(v);
   });
 
@@ -277,6 +287,10 @@ export default function ScrollIntro() {
   useMotionValueEvent(progress, "change", (v: number) => {
     setSc({ sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 });
   });
+
+  // 🚀 THE ULTIMATE KILL SWITCH: If it's done or memory says they saw it, render NOTHING!
+  // This physically deletes the 400vh invisible container from the DOM.
+  if (!isMounted) return null;
 
   return (
     <>
@@ -301,9 +315,9 @@ export default function ScrollIntro() {
           position: "sticky", top: 0, height: "100vh", width: "100%",
           overflow: "hidden", background: "#050508",
           display: "flex", alignItems: "center", justifyContent: "center",
-          opacity: isDone ? 0 : introOpacity,
-          pointerEvents: isDone ? "none" : "auto",
-          transition: isDone ? "opacity 0.3s" : "none",
+          opacity: isDone ? 0 : introOpacity,           
+          pointerEvents: isDone ? "none" : "auto",      
+          transition: isDone ? "opacity 0.3s" : "none", // Matches the setTimeout
         }}>
 
           <motion.div className="scanline" style={{ opacity: scanOpacity }} aria-hidden />
