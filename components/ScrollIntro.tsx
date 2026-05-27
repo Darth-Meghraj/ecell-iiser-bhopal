@@ -7,6 +7,9 @@ import {
 } from "framer-motion";
 import { ChevronsDown } from "lucide-react";
 
+// 🚀 ADDED: Global memory so it only plays once per session.
+let hasPlayedIntro = false;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRAMBLE TEXT
 // ─────────────────────────────────────────────────────────────────────────────
@@ -158,10 +161,15 @@ function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue
 // MAIN  — one-time experience, no scroll-up replay
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ScrollIntro() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const autoCtrlRef  = useRef<ReturnType<typeof animate> | null>(null);
-  const doneRef      = useRef(false); // guard so we never replay
+  const containerRef    = useRef<HTMLDivElement>(null);
+  const autoCtrlRef     = useRef<ReturnType<typeof animate> | null>(null);
+  const prevScrollRef   = useRef(0);
+  const handedOffRef    = useRef(false);
+  const doneRef         = useRef(false); // guard so we never replay
 
+  // 🚀 ADDED: State to physically unmount the container after fade out
+  const [isMounted, setIsMounted] = useState(!hasPlayedIntro);
+  
   const [isDone, setIsDone] = useState(false);
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
 
@@ -182,37 +190,91 @@ export default function ScrollIntro() {
     return () => { ua(); us(); };
   }, [autoProg, scrollProg, progress]);
 
-  // ── Finish handler ────────────────────────────────────────────────────
+  // ── Full reset helper ─────────────────────────────────────────────────
+  const reset = useCallback(() => {
+    autoCtrlRef.current?.stop();
+    autoCtrlRef.current = null;
+    autoProg.set(0);
+    scrollProg.set(0);
+    progress.set(0);
+    handedOffRef.current = false;
+    setIsDone(false);
+    setSc({ sys: false, ecell: false, sub: false });
+  }, [autoProg, scrollProg, progress]);
+
+
+  // ─────────────────────────────────────────────────────────────────────
+  // 🚀 THE FIX: THE KILL SWITCH
+  // Replaces the old 'scrollToHero' behavior.
+  // Instead of leaving the 400vh container on the page, this completely
+  // deletes it after the fade animation finishes, removing the blank space.
+  // ─────────────────────────────────────────────────────────────────────
   const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
-    setIsDone(true);
-    // If auto-played (user didn't scroll), jump DOM scroll to end of container
-    // so the hero is immediately visible with no blank gap
-    if (scrollYProgress.get() < 0.5 && containerRef.current) {
-      window.scrollTo({ top: containerRef.current.offsetHeight, behavior: "instant" });
-    }
-  }, [scrollYProgress]);
+    hasPlayedIntro = true; // Save to global memory
+    setIsDone(true); // Triggers the opacity fade in CSS
+    
+    // Wait for the opacity fade to finish (0.3s), then nuke the container
+    setTimeout(() => {
+      setIsMounted(false);
+      // Because 400vh just vanished, we instantly snap to the top 
+      // of the page so the Hero section is perfectly aligned.
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }, 300);
+  }, []);
 
   // ── Auto-play once on mount ───────────────────────────────────────────
   const startAuto = useCallback(() => {
+    if (!isMounted) return;
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = animate(autoProg, 1, {
       duration: 12,
       ease: [0.42, 0, 0.48, 1],
       onComplete: () => setTimeout(finish, 300),
     });
-  }, [autoProg, finish]);
+  }, [autoProg, finish, isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return;
     const t = setTimeout(() => startAuto(), 1500);
     return () => clearTimeout(t);
-  }, [startAuto]);
+  }, [startAuto, isMounted]);
 
   // ── Mirror scroll into scrollProg; finish if scroll reaches end ───────
   useMotionValueEvent(scrollYProgress, "change", (v: number) => {
-    scrollProg.set(v);
+    if (!isMounted) return;
+    
+    const prev    = prevScrollRef.current;
+    const goingUp = v < prev - 0.001;
+    prevScrollRef.current = v;
+
+    if (goingUp) {
+      if (autoCtrlRef.current && !handedOffRef.current) {
+        handedOffRef.current = true;
+        autoCtrlRef.current.stop();
+        autoCtrlRef.current = null;
+        autoProg.set(0);
+      }
+      if (v < 0.03) {
+        reset();
+        setTimeout(() => startAuto(), 800);
+        return;
+      }
+    }
+
+    if (!goingUp && handedOffRef.current && !autoCtrlRef.current && v > 0.03) {
+      handedOffRef.current = false;
+      autoProg.set(v);
+      autoCtrlRef.current = animate(autoProg, 1, {
+        duration: 12 * (1 - v),
+        ease: "linear",
+        onComplete: () => setTimeout(finish, 300),
+      });
+    }
+
     if (v >= 0.99) finish();
+    scrollProg.set(v);
   });
 
   // ── Derived transforms ────────────────────────────────────────────────
@@ -229,6 +291,10 @@ export default function ScrollIntro() {
   useMotionValueEvent(progress, "change", (v: number) => {
     setSc({ sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 });
   });
+
+  // 🚀 If it's done or memory says they saw it, render NOTHING!
+  // This physically deletes the 400vh invisible space from the DOM.
+  if (!isMounted) return null;
 
   return (
     <>
