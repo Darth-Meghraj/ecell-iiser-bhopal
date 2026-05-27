@@ -158,14 +158,14 @@ function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue
 // MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ScrollIntro() {
-  const containerRef  = useRef<HTMLDivElement>(null);
-  const autoCtrlRef   = useRef<ReturnType<typeof animate> | null>(null);
-  const prevScrollRef = useRef(0);       // track scroll direction
-  const handedOffRef  = useRef(false);   // true once user scrolled up mid-auto
-  const [isDone, setIsDone]   = useState(false);  // hides overlay (not unmounts)
+  const containerRef    = useRef<HTMLDivElement>(null);
+  const autoCtrlRef     = useRef<ReturnType<typeof animate> | null>(null);
+  const prevScrollRef   = useRef(0);
+  const handedOffRef    = useRef(false);
+
+  const [isDone, setIsDone] = useState(false);
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
 
-  // ── Two progress sources ──────────────────────────────────────────────
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -174,7 +174,6 @@ export default function ScrollIntro() {
   const autoProg   = useMotionValue<number>(0);
   const progress   = useMotionValue<number>(0);
 
-  // Combined: whichever is ahead
   useEffect(() => {
     const sync = () => progress.set(Math.max(autoProg.get(), scrollProg.get()));
     const ua = autoProg.on("change", sync);
@@ -182,7 +181,6 @@ export default function ScrollIntro() {
     return () => { ua(); us(); };
   }, [autoProg, scrollProg, progress]);
 
-  // ── Full reset helper ─────────────────────────────────────────────────
   const reset = useCallback(() => {
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = null;
@@ -194,40 +192,54 @@ export default function ScrollIntro() {
     setSc({ sys: false, ecell: false, sub: false });
   }, [autoProg, scrollProg, progress]);
 
-  // ── Start auto-animation ──────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────────────
+  // THE ONLY THING CHANGED FROM THE ORIGINAL:
+  //
+  // When the auto-animation completes, if the user hasn't scrolled past
+  // the intro themselves (scrollYProgress < 0.5), we call window.scrollTo
+  // to land them at the top of the hero section (= bottom of this container).
+  //
+  // Without this, progress reaches 1.0 via the motion value but the actual
+  // DOM scroll position is still 0 — so the overlay turns invisible and the
+  // user sees 400 vh of blank space instead of the hero.
+  // ─────────────────────────────────────────────────────────────────────
+  const scrollToHero = useCallback(() => {
+    if (scrollYProgress.get() < 0.5 && containerRef.current) {
+      // Instant jump — no smooth scroll delay means no black flash between
+      // the overlay turning transparent and the hero coming into view.
+      window.scrollTo(0, containerRef.current.offsetHeight);
+    }
+  }, [scrollYProgress]);
+
   const startAuto = useCallback(() => {
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = animate(autoProg, 1, {
       duration: 12,
       ease: [0.42, 0, 0.48, 1],
-      onComplete: () => setTimeout(() => setIsDone(true), 300),
+      onComplete: () => setTimeout(() => {
+        setIsDone(true);
+        scrollToHero();           // ← only new line
+      }, 300),
     });
-  }, [autoProg]);
+  }, [autoProg, scrollToHero]);
 
-  // Launch on mount after 1.5 s
   useEffect(() => {
     const t = setTimeout(() => startAuto(), 1500);
     return () => clearTimeout(t);
   }, [startAuto]);
 
-  // ── Scroll event handler ──────────────────────────────────────────────
   useMotionValueEvent(scrollYProgress, "change", (v: number) => {
-    const prev   = prevScrollRef.current;
+    const prev    = prevScrollRef.current;
     const goingUp = v < prev - 0.001;
     prevScrollRef.current = v;
 
-    // ── Scrolling UP ──────────────────────────────────────────────────
     if (goingUp) {
-      // Hand control to scroll immediately — stop auto so it doesn't fight
       if (autoCtrlRef.current && !handedOffRef.current) {
         handedOffRef.current = true;
         autoCtrlRef.current.stop();
         autoCtrlRef.current = null;
-        // Drop autoProg below current scroll so scroll value wins from here
         autoProg.set(0);
       }
-
-      // Back near the very top — full reset + replay
       if (v < 0.03) {
         reset();
         setTimeout(() => startAuto(), 800);
@@ -235,26 +247,23 @@ export default function ScrollIntro() {
       }
     }
 
-    // ── Scrolling DOWN after a hand-off — restart auto from where scroll is
     if (!goingUp && handedOffRef.current && !autoCtrlRef.current && v > 0.03) {
       handedOffRef.current = false;
-      // Restart auto from current position so it doesn't jump back
       autoProg.set(v);
       autoCtrlRef.current = animate(autoProg, 1, {
-        duration: 12 * (1 - v),  // remaining duration proportional to remaining progress
+        duration: 12 * (1 - v),
         ease: "linear",
-        onComplete: () => setTimeout(() => setIsDone(true), 300),
+        onComplete: () => setTimeout(() => {
+          setIsDone(true);
+          scrollToHero();           // ← same fix for the re-start-auto path
+        }, 300),
       });
     }
 
-    // ── Finished scrolling through ────────────────────────────────────
     if (v >= 0.99) setIsDone(true);
-
-    // ── Mirror scroll into scrollProg ────────────────────────────────
     scrollProg.set(v);
   });
 
-  // ── Derived transforms ────────────────────────────────────────────────
   const textY        = useTransform(progress, [0.22, 0.40], [80, 0]);
   const textOpacity  = useTransform(progress, [0.22, 0.36, 0.80, 0.92], [0, 1, 1, 0]);
   const textScale    = useTransform(progress, [0.80, 0.93], [1, 2]);
@@ -265,7 +274,6 @@ export default function ScrollIntro() {
   const introOpacity = useTransform(progress, [0.97, 1.0], [1, 0]);
   const nudgeOpacity = useTransform(progress, [0, 0.04, 0.18], [1, 1, 0]);
 
-  // Scramble triggers
   useMotionValueEvent(progress, "change", (v: number) => {
     setSc({ sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 });
   });
@@ -288,31 +296,23 @@ export default function ScrollIntro() {
         }
       `}</style>
 
-      {/*
-        Container stays in DOM ALWAYS (400vh) so scrollYProgress keeps firing
-        even after the animation completes — enabling scroll-up to reset.
-        isDone just hides the overlay visually + removes pointer-events.
-      */}
       <div ref={containerRef} style={{ height: "400vh", position: "relative", zIndex: 50 }}>
         <motion.div style={{
           position: "sticky", top: 0, height: "100vh", width: "100%",
           overflow: "hidden", background: "#050508",
           display: "flex", alignItems: "center", justifyContent: "center",
-          opacity: isDone ? 0 : introOpacity,           // hide when done
-          pointerEvents: isDone ? "none" : "auto",      // don't block site below
+          opacity: isDone ? 0 : introOpacity,
+          pointerEvents: isDone ? "none" : "auto",
           transition: isDone ? "opacity 0.3s" : "none",
         }}>
 
-          {/* Scan line */}
           <motion.div className="scanline" style={{ opacity: scanOpacity }} aria-hidden />
 
-          {/* Vignette */}
           <div style={{
             position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1,
             background: "radial-gradient(ellipse at 50% 42%, transparent 10%, #050508 80%)",
           }} aria-hidden />
 
-          {/* Arc Reactor */}
           <motion.div style={{
             position: "absolute", zIndex: 3,
             display: "flex", alignItems: "center", justifyContent: "center",
@@ -321,7 +321,6 @@ export default function ScrollIntro() {
             <ArcReactor progress={progress} />
           </motion.div>
 
-          {/* Text block */}
           <motion.div style={{
             position: "absolute", zIndex: 4, pointerEvents: "none",
             y: textY, opacity: textOpacity, scale: textScale,
@@ -364,7 +363,6 @@ export default function ScrollIntro() {
             </motion.div>
           </motion.div>
 
-          {/* Scroll nudge */}
           <ScrollNudge opacity={nudgeOpacity} />
 
         </motion.div>
