@@ -8,15 +8,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, ExternalLink } from "lucide-react"; 
-// Pulling the EXACT official brand logos from react-icons
 import { FaLinkedin, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 import { siteConfig } from "@/config/site";
 
-// Mapping your siteConfig strings to the official brand SVGs
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   Linkedin: FaLinkedin,
   Instagram: FaInstagram,
-  Twitter: FaXTwitter, // Uses the official "X" logo
+  Twitter: FaXTwitter,
   Github: FaGithub,
 };
 
@@ -25,7 +23,6 @@ export default function Footer() {
 
   return (
     <footer id="contact" className="relative border-t border-white/[0.06]">
-      {/* Top glow line */}
       <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       <div className="max-w-6xl mx-auto px-4 py-20">
@@ -38,7 +35,6 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
             className="col-span-1 md:col-span-1"
           >
-            {/* Logo mark */}
             <div className="flex items-center gap-3 mb-4">
               <Image 
                 src="/logo.png" 
@@ -54,7 +50,6 @@ export default function Footer() {
             </div>
             <p className="text-white/40 text-sm leading-relaxed mb-6">{footer.tagline}</p>
 
-            {/* Social icons */}
             <div className="flex items-center gap-3">
               {footer.socials.map((social: any) => {
                 const Icon = SOCIAL_ICONS[social.icon] ?? ExternalLink;
@@ -94,6 +89,8 @@ export default function Footer() {
               <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
               <span className="font-mono">{footer.email}</span>
             </a>
+            
+            {/* RESTORED: Original Address Format */}
             <div className="flex items-start gap-3 text-sm text-white/40">
               <MapPin size={15} className="mt-0.5 shrink-0 text-white/20" />
               <div>
@@ -114,27 +111,35 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {siteConfig.nav.map((link: any) => (
-                <li key={link.href}>
-                  <Link
-                    href={{ pathname: link.href }}
-                    className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
-                  >
-                    <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {siteConfig.nav.map((link: any) => {
+                const isExternal = link.href.startsWith("http");
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href as any}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
+                    >
+                      <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
+                      {link.label}
+                      {isExternal && (
+                        <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
               <li>
                 <a
-                  href="https://iiserbhopal.ac.in"
+                  href="https://www.iiserb.ac.in"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
                 >
                   <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
                   IISER Bhopal
-                  <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity" />
+                  <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
                 </a>
               </li>
             </ul>
@@ -148,7 +153,7 @@ export default function Footer() {
             {footer.legalLinks.map((link: { href: string; label: string }) => (
               <Link
                 key={link.href}
-                href={{ pathname: link.href }}
+                href={link.href as any}
                 className="text-xs text-white/20 hover:text-white/40 transition-colors font-mono"
               >
                 {link.label}

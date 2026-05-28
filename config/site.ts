@@ -17,7 +17,7 @@ export const siteConfig = {
   nav: [
     { label: "Vision", href: "#vision" },
     { label: "Pitch Portal", href: "#pitch" },
-    { label: "Contact", href: "#contact" },
+    { label: "IICE IISER Bhopal", href: "https://iice.iiserb.ac.in/" }, // Updated Button
   ],
 
   // ── Hero Section ─────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ export const siteConfig = {
         description:
           "A dedicated physical and virtual space for student ventures. We'll provide mentorship, prototyping resources, and a structured program to take your idea from whiteboard to MVP.",
         accent: "cyan",
-        size: "large", // spans 2 cols
+        size: "large",
         comingSoon: "Fingers Crossed",
       },
       {
