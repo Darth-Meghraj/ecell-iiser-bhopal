@@ -189,16 +189,12 @@ export default function ScrollIntro() {
   const autoCtrlRef     = useRef<ReturnType<typeof animate> | null>(null);
   const prevScrollRef   = useRef(0);
   const handedOffRef    = useRef(false);
-  
-  // 🚀 THE FIX: Initialize doneRef to hasPlayedIntro so timers ignore it instantly if navigated away and back
   const doneRef         = useRef(hasPlayedIntro); 
 
-  // 🚀 THE FIX: Initialize isMounted to true to prevent React Hydration errors
   const [isMounted, setIsMounted] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
 
-  // Instantly hide the component on the client if it has already been played
   useEffect(() => {
     if (hasPlayedIntro) {
       setIsMounted(false);
@@ -241,9 +237,10 @@ export default function ScrollIntro() {
     setIsFadingOut(true); 
     window.scrollTo({ top: 0, behavior: "instant" });
     
+    // 🚀 SPEED FIX: Dropped to 50ms for a near-instant cut, hiding any GPU struggle
     setTimeout(() => {
       setIsMounted(false);
-    }, 150); 
+    }, 50); 
   }, []);
 
   // ── Auto-play once on mount ───────────────────────────────────────────
@@ -319,7 +316,6 @@ export default function ScrollIntro() {
     });
   });
 
-  // 🚀 THE FIX: Instead of returning null, return an invisible div so `useScroll` doesn't panic
   if (!isMounted) {
     return <div ref={containerRef} style={{ display: "none" }} aria-hidden="true" />;
   }
@@ -352,7 +348,8 @@ export default function ScrollIntro() {
           display: "flex", alignItems: "center", justifyContent: "center",
           opacity: isFadingOut ? 0 : 1,
           pointerEvents: isFadingOut ? "none" : "auto",
-          transition: isFadingOut ? "opacity 0.15s ease-out" : "none",
+          // 🚀 SPEED FIX: Matched to 0.05s for a virtually instant snap
+          transition: isFadingOut ? "opacity 0.05s ease-out" : "none",
           willChange: "opacity, transform",
         }}>
 
