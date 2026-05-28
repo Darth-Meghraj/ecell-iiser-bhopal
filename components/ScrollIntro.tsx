@@ -1,17 +1,18 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, memo } from "react";
 import {
   motion, useScroll, useTransform,
   useMotionValue, useMotionValueEvent, animate,
+  MotionValue
 } from "framer-motion";
 import { ChevronsDown } from "lucide-react";
 
-// 🚀 ADDED: Global memory so it only plays once per session.
+// Global memory so it only plays once per session.
 let hasPlayedIntro = false;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SCRAMBLE TEXT
+// SCRAMBLE TEXT 
 // ─────────────────────────────────────────────────────────────────────────────
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$Σ∆Ω≈<>?/\\|{}[]*&%";
 
@@ -20,43 +21,59 @@ function ScrambleText({ text, active, speed = 36, stagger = 60, style }: {
   style?: React.CSSProperties;
 }) {
   const elRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     if (!elRef.current) return;
     if (!active) {
       elRef.current.innerText = text.split("").map(() => "\u00A0").join("");
       return;
     }
+    
     let elapsed = 0;
+    let lastTime = performance.now();
+    let animationId: number;
     const resolved = new Array(text.length).fill(false);
-    const iv = setInterval(() => {
-      elapsed += speed;
-      const next = text.split("").map((ch, i) => {
-        if (ch === " " || ch === "—") return ch;
-        if (elapsed > i * stagger + 600) resolved[i] = true;
-        return resolved[i] ? ch : CHARS[Math.floor(Math.random() * CHARS.length)];
-      }).join("");
-      if (elRef.current) elRef.current.innerText = next;
-      if (resolved.every(Boolean)) clearInterval(iv);
-    }, speed);
-    return () => clearInterval(iv);
+
+    const frame = (time: number) => {
+      const delta = time - lastTime;
+      if (delta > speed) {
+        elapsed += delta;
+        lastTime = time;
+        
+        const next = text.split("").map((ch, i) => {
+          if (ch === " " || ch === "—") return ch;
+          if (elapsed > i * stagger + 600) resolved[i] = true;
+          return resolved[i] ? ch : CHARS[Math.floor(Math.random() * CHARS.length)];
+        }).join("");
+        
+        if (elRef.current) elRef.current.innerText = next;
+        if (resolved.every(Boolean)) return; 
+      }
+      animationId = requestAnimationFrame(frame);
+    };
+
+    animationId = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(animationId);
   }, [active, text, speed, stagger]);
+  
   return <div ref={elRef} style={style} />;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ARC REACTOR LOGO
+// ARC REACTOR LOGO 
 // ─────────────────────────────────────────────────────────────────────────────
-function ArcReactor({ progress }: { progress: ReturnType<typeof useMotionValue<number>> }) {
+const ArcReactor = memo(function ArcReactor({ progress }: { progress: MotionValue<number> }) {
   const ring1Rotate  = useTransform(progress, [0, 1], [0, 360]);
   const ring2Rotate  = useTransform(progress, [0, 1], [0, -420]);
   const ring3Rotate  = useTransform(progress, [0, 1], [0, 180]);
   const corePower    = useTransform(progress, [0, 0.3], [0, 1]);
   const irisOpen     = useTransform(progress, [0.75, 0.96], [150, 240]);
-  const flashScale   = useTransform(progress, [0.95, 0.98], [0, 250]);
-  const flashOpacity = useTransform(progress, [0.95, 0.965], [0, 1]);
+  const flashScale   = useTransform(progress, [0.96, 0.99], [0, 250]);
+  const flashOpacity = useTransform(progress, [0.96, 0.98], [0, 1]);
 
   return (
     <div style={{ position: "relative", width: 300, height: 300 }}>
+      {/* Central Flash Layer */}
       <motion.div style={{
         position: "absolute", top: "50%", left: "50%",
         width: 20, height: 20, x: "-50%", y: "-50%",
@@ -65,12 +82,16 @@ function ArcReactor({ progress }: { progress: ReturnType<typeof useMotionValue<n
         scale: flashScale, opacity: flashOpacity, zIndex: 50,
         willChange: "transform,opacity",
       }} />
+      
+      {/* Background Glow Layer */}
       <motion.div style={{
         position: "absolute", inset: 0,
         background: "radial-gradient(circle, #00f5ff 0%, transparent 70%)",
-        filter: "blur(50px)", opacity: corePower, zIndex: -1,
+        filter: "blur(40px)", opacity: corePower, zIndex: -1,
+        willChange: "opacity",
       }} />
-      <svg width="300" height="300" viewBox="0 0 300 300" fill="none" style={{ overflow: "visible" }}>
+      
+      <svg width="300" height="300" viewBox="0 0 300 300" fill="none" style={{ overflow: "visible", willChange: "transform" }}>
         <defs>
           <linearGradient id="titanium" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%"   stopColor="#2a2d3e" />
@@ -89,16 +110,19 @@ function ArcReactor({ progress }: { progress: ReturnType<typeof useMotionValue<n
             <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </radialGradient>
         </defs>
+        
         <circle cx="150" cy="150" r="140" fill="url(#copper-accent)" stroke="#1a1d2e" strokeWidth="2" />
         <circle cx="150" cy="150" r="130" fill="url(#titanium)" stroke="#000" strokeWidth="6" />
+        
         <motion.g style={{ rotate: ring1Rotate, transformOrigin: "150px 150px" }}>
           <circle cx="150" cy="150" r="115" stroke="#00f5ff" strokeWidth="1" strokeDasharray="2 12" opacity="0.5" />
           <circle cx="150" cy="150" r="105" stroke="url(#titanium)" strokeWidth="12" strokeDasharray="60 20" strokeLinecap="round" />
-          <circle cx="150" cy="150" r="105" stroke="#00f5ff" strokeWidth="2" strokeDasharray="0 80" strokeLinecap="round" style={{ filter: "drop-shadow(0 0 8px #00f5ff)" }} />
+          <circle cx="150" cy="150" r="105" stroke="#00f5ff" strokeWidth="2" strokeDasharray="0 80" strokeLinecap="round" />
         </motion.g>
+        
         <motion.g style={{ rotate: ring2Rotate, transformOrigin: "150px 150px" }}>
           <circle cx="150" cy="150" r="85" stroke="#0a0b10" strokeWidth="16" />
-          <circle cx="150" cy="150" r="85" stroke="#00f5ff" strokeWidth="4" strokeDasharray="15 45" style={{ filter: "drop-shadow(0 0 10px #00f5ff)" }} />
+          <circle cx="150" cy="150" r="85" stroke="#00f5ff" strokeWidth="4" strokeDasharray="15 45" />
           {Array.from({ length: 12 }).map((_, i) => {
             const a = (i / 12) * Math.PI * 2;
             return <line key={i}
@@ -107,24 +131,24 @@ function ArcReactor({ progress }: { progress: ReturnType<typeof useMotionValue<n
               stroke="#1a1d2e" strokeWidth="4" />;
           })}
         </motion.g>
+        
         <motion.g style={{ rotate: ring3Rotate, transformOrigin: "150px 150px" }}>
           <circle cx="150" cy="150" r="60" stroke="#0044ff" strokeWidth="8" opacity="0.3" />
           <motion.circle cx="150" cy="150" r="60" stroke="#00f5ff" strokeWidth="8"
-            strokeDasharray="200 100" strokeDashoffset={irisOpen} strokeLinecap="round"
-            style={{ filter: "drop-shadow(0 0 15px #00f5ff)" }} />
+            strokeDasharray="200 100" strokeDashoffset={irisOpen} strokeLinecap="round" />
         </motion.g>
+        
         <motion.circle cx="150" cy="150" r="45" fill="url(#plasma)" style={{ opacity: corePower }} />
-        <motion.circle cx="150" cy="150" r="20" fill="#ffffff"
-          style={{ opacity: corePower, filter: "drop-shadow(0 0 20px #fff)" }} />
+        <motion.circle cx="150" cy="150" r="20" fill="#ffffff" style={{ opacity: corePower }} />
       </svg>
     </div>
   );
-}
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SCROLL NUDGE
 // ─────────────────────────────────────────────────────────────────────────────
-function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue<number> }) {
+function ScrollNudge({ opacity }: { opacity: MotionValue<number> }) {
   return (
     <motion.div style={{
       position: "absolute", bottom: "2rem", left: 0, right: 0,
@@ -158,31 +182,38 @@ function ScrollNudge({ opacity }: { opacity: import("framer-motion").MotionValue
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MAIN  — one-time experience, no scroll-up replay
+// MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 export default function ScrollIntro() {
   const containerRef    = useRef<HTMLDivElement>(null);
   const autoCtrlRef     = useRef<ReturnType<typeof animate> | null>(null);
   const prevScrollRef   = useRef(0);
   const handedOffRef    = useRef(false);
-  const doneRef         = useRef(false); // guard so we never replay
-
-  // 🚀 ADDED: State to physically unmount the container after fade out
-  const [isMounted, setIsMounted] = useState(!hasPlayedIntro);
   
-  const [isDone, setIsDone] = useState(false);
+  // 🚀 THE FIX: Initialize doneRef to hasPlayedIntro so timers ignore it instantly if navigated away and back
+  const doneRef         = useRef(hasPlayedIntro); 
+
+  // 🚀 THE FIX: Initialize isMounted to true to prevent React Hydration errors
+  const [isMounted, setIsMounted] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const [sc, setSc] = useState({ sys: false, ecell: false, sub: false });
 
-  // ── Progress sources ──────────────────────────────────────────────────
+  // Instantly hide the component on the client if it has already been played
+  useEffect(() => {
+    if (hasPlayedIntro) {
+      setIsMounted(false);
+    }
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
+  
   const scrollProg = useMotionValue<number>(0);
   const autoProg   = useMotionValue<number>(0);
   const progress   = useMotionValue<number>(0);
 
-  // Combined: whichever is ahead
   useEffect(() => {
     const sync = () => progress.set(Math.max(autoProg.get(), scrollProg.get()));
     const ua = autoProg.on("change", sync);
@@ -190,7 +221,6 @@ export default function ScrollIntro() {
     return () => { ua(); us(); };
   }, [autoProg, scrollProg, progress]);
 
-  // ── Full reset helper ─────────────────────────────────────────────────
   const reset = useCallback(() => {
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = null;
@@ -198,52 +228,44 @@ export default function ScrollIntro() {
     scrollProg.set(0);
     progress.set(0);
     handedOffRef.current = false;
-    setIsDone(false);
+    setIsFadingOut(false);
     setSc({ sys: false, ecell: false, sub: false });
   }, [autoProg, scrollProg, progress]);
 
-
-  // ─────────────────────────────────────────────────────────────────────
-  // 🚀 THE FIX: THE KILL SWITCH
-  // Replaces the old 'scrollToHero' behavior.
-  // Instead of leaving the 400vh container on the page, this completely
-  // deletes it after the fade animation finishes, removing the blank space.
-  // ─────────────────────────────────────────────────────────────────────
+  // ── The Seamless Crossfade Exit ───────────────────────────────────────
   const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
-    hasPlayedIntro = true; // Save to global memory
-    setIsDone(true); // Triggers the opacity fade in CSS
+    hasPlayedIntro = true; 
     
-    // Wait for the opacity fade to finish (0.3s), then nuke the container
+    setIsFadingOut(true); 
+    window.scrollTo({ top: 0, behavior: "instant" });
+    
     setTimeout(() => {
       setIsMounted(false);
-      // Because 400vh just vanished, we instantly snap to the top 
-      // of the page so the Hero section is perfectly aligned.
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }, 300);
+    }, 150); 
   }, []);
 
   // ── Auto-play once on mount ───────────────────────────────────────────
   const startAuto = useCallback(() => {
-    if (!isMounted) return;
+    if (!isMounted || doneRef.current) return;
     autoCtrlRef.current?.stop();
     autoCtrlRef.current = animate(autoProg, 1, {
-      duration: 12,
+      duration: 8, 
       ease: [0.42, 0, 0.48, 1],
-      onComplete: () => setTimeout(finish, 300),
+      onComplete: finish, 
     });
   }, [autoProg, finish, isMounted]);
 
   useEffect(() => {
-    if (!isMounted) return;
-    const t = setTimeout(() => startAuto(), 1500);
+    if (!isMounted || doneRef.current) return;
+    const t = setTimeout(() => startAuto(), 300); 
     return () => clearTimeout(t);
   }, [startAuto, isMounted]);
 
   // ── Mirror scroll into scrollProg; finish if scroll reaches end ───────
   useMotionValueEvent(scrollYProgress, "change", (v: number) => {
-    if (!isMounted) return;
+    if (!isMounted || doneRef.current) return; 
     
     const prev    = prevScrollRef.current;
     const goingUp = v < prev - 0.001;
@@ -258,7 +280,7 @@ export default function ScrollIntro() {
       }
       if (v < 0.03) {
         reset();
-        setTimeout(() => startAuto(), 800);
+        setTimeout(() => startAuto(), 400); 
         return;
       }
     }
@@ -267,9 +289,9 @@ export default function ScrollIntro() {
       handedOffRef.current = false;
       autoProg.set(v);
       autoCtrlRef.current = animate(autoProg, 1, {
-        duration: 12 * (1 - v),
+        duration: 8 * (1 - v),
         ease: "linear",
-        onComplete: () => setTimeout(finish, 300),
+        onComplete: finish,
       });
     }
 
@@ -285,16 +307,22 @@ export default function ScrollIntro() {
   const subY         = useTransform(progress, [0.34, 0.46], [20, 0]);
   const reactorScale = useTransform(progress, [0.74, 0.95], [1, 4]);
   const scanOpacity  = useTransform(progress, [0.20, 0.25, 0.82, 0.87], [0, 1, 1, 0]);
-  const introOpacity = useTransform(progress, [0.97, 1.0], [1, 0]);
   const nudgeOpacity = useTransform(progress, [0, 0.04, 0.18], [1, 1, 0]);
 
   useMotionValueEvent(progress, "change", (v: number) => {
-    setSc({ sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 });
+    setSc(prev => {
+      const next = { sys: v > 0.22, ecell: v > 0.25, sub: v > 0.34 };
+      if (prev.sys === next.sys && prev.ecell === next.ecell && prev.sub === next.sub) {
+        return prev; 
+      }
+      return next;
+    });
   });
 
-  // 🚀 If it's done or memory says they saw it, render NOTHING!
-  // This physically deletes the 400vh invisible space from the DOM.
-  if (!isMounted) return null;
+  // 🚀 THE FIX: Instead of returning null, return an invisible div so `useScroll` doesn't panic
+  if (!isMounted) {
+    return <div ref={containerRef} style={{ display: "none" }} aria-hidden="true" />;
+  }
 
   return (
     <>
@@ -314,14 +342,18 @@ export default function ScrollIntro() {
         }
       `}</style>
 
-      <div ref={containerRef} style={{ height: "400vh", position: "relative", zIndex: 50 }}>
+      <div ref={containerRef} style={{ height: isFadingOut ? 0 : "400vh", position: "relative", zIndex: 50 }}>
+        
         <motion.div style={{
-          position: "sticky", top: 0, height: "100vh", width: "100%",
+          position: isFadingOut ? "fixed" : "sticky", 
+          top: 0, left: 0, right: 0,
+          height: "100vh", width: "100%",
           overflow: "hidden", background: "#050508",
           display: "flex", alignItems: "center", justifyContent: "center",
-          opacity: isDone ? 0 : introOpacity,
-          pointerEvents: isDone ? "none" : "auto",
-          transition: isDone ? "opacity 0.3s" : "none",
+          opacity: isFadingOut ? 0 : 1,
+          pointerEvents: isFadingOut ? "none" : "auto",
+          transition: isFadingOut ? "opacity 0.15s ease-out" : "none",
+          willChange: "opacity, transform",
         }}>
 
           <motion.div className="scanline" style={{ opacity: scanOpacity }} aria-hidden />
