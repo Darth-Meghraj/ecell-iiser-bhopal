@@ -17,7 +17,7 @@ export const siteConfig = {
   nav: [
     { label: "Vision", href: "#vision" },
     { label: "Pitch Portal", href: "#pitch" },
-    { label: "IICE IISER Bhopal", href: "https://iice.iiserb.ac.in/" }, // Updated Button
+    { label: "Contact", href: "#contact" }, // Updated Button
   ],
 
   // ── Hero Section ─────────────────────────────────────────────────────────

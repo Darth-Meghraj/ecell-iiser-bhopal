@@ -82,15 +82,27 @@ export default function Footer() {
             <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-white/30 mb-5">
               Contact
             </h3>
+            
+            {/* Mobile View: Standard mailto */}
             <a
               href={`mailto:${footer.email}`}
-              className="flex items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
+              className="flex md:hidden items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
+            >
+              <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
+              <span className="font-mono">{footer.email}</span>
+            </a>
+
+            {/* Desktop View: Force Gmail Web */}
+            <a
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
             >
               <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
               <span className="font-mono">{footer.email}</span>
             </a>
             
-            {/* RESTORED: Original Address Format */}
             <div className="flex items-start gap-3 text-sm text-white/40">
               <MapPin size={15} className="mt-0.5 shrink-0 text-white/20" />
               <div>
