@@ -116,6 +116,11 @@ export const siteConfig = {
     institution: "Indian Institute of Science Education and Research, Bhopal",
     address: "Bhauri, Bhopal Bypass Road, Bhopal - 462066, Madhya Pradesh",
     email: "iice@iiserb.ac.in",
+    footerLinks: [
+      { label: "Vision", href: "#vision" },
+      { label: "Pitch Portal", href: "#pitch" },
+      { label: "IICE IISER Bhopal", href: "https://iice.iiserb.ac.in/" },
+   ],
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com/company/ecell-sdc-iiser-bhopal/", icon: "Linkedin" },
       { label: "Instagram", href: "https://www.instagram.com/ecell_iiserb?igsh=c2U2c3F4YTM5ejZs", icon: "Instagram" },

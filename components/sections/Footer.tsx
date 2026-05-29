@@ -21,6 +21,23 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
 export default function Footer() {
   const { footer, name, shortName } = siteConfig;
 
+  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+    if (isMobile) {
+      // Opens Gmail app on both iOS and Android
+      window.location.href = `googlegmail://co?to=${footer.email}`;
+    } else {
+      window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  };
+
   return (
     <footer id="contact" className="relative border-t border-white/[0.06]">
       <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -83,21 +100,10 @@ export default function Footer() {
               Contact
             </h3>
             
-            {/* Mobile View: Standard mailto */}
             <a
               href={`mailto:${footer.email}`}
-              className="flex md:hidden items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
-            >
-              <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
-              <span className="font-mono">{footer.email}</span>
-            </a>
-
-            {/* Desktop View: Force Gmail Web */}
-            <a
-              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
+              onClick={handleEmailClick}
+              className="flex items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
             >
               <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
               <span className="font-mono">{footer.email}</span>
@@ -123,7 +129,7 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {siteConfig.nav.map((link: any) => {
+              {siteConfig.footer.footerLinks.map((link: any) => {
                 const isExternal = link.href.startsWith("http");
                 return (
                   <li key={link.href}>
