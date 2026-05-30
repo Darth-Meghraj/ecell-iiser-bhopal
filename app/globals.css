@@ -30,6 +30,12 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background-color: var(--color-bg);
+  color: #ffffff;
+  margin: 0;
+}
+
 /* Remove default focus for mouse users, keep for keyboard */
 :focus:not(:focus-visible) {
   outline: none;
