@@ -11,7 +11,8 @@ import { Mail, MapPin, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 import { siteConfig } from "@/config/site";
 
-const SOCIAL_ICONS: Record<string, React.ElementType> = {
+// FIX APPLIED: Changed React.ElementType to React.ComponentType<any> to allow the size prop
+const SOCIAL_ICONS: Record<string, React.ComponentType<any>> = {
   Linkedin: FaLinkedin,
   Instagram: FaInstagram,
   Twitter: FaXTwitter,
@@ -69,7 +70,8 @@ export default function Footer() {
 
             <div className="flex items-center gap-3">
               {footer.socials.map((social: any) => {
-                const Icon = SOCIAL_ICONS[social.icon] ?? ExternalLink;
+                // FIX APPLIED: Cast to React.ComponentType<any> here as well
+                const Icon = (SOCIAL_ICONS[social.icon] ?? ExternalLink) as React.ComponentType<any>;
                 return (
                   <motion.a
                     key={social.label}
