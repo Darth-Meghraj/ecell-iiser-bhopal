@@ -1,7 +1,6 @@
 // app/layout.tsx
 
 import type { Metadata } from "next";
-// 1. Import DM_Sans from next/font/google instead of localFont
 import { DM_Sans } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -9,20 +8,37 @@ import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import StarStream from "@/components/ui/StarStream";
 import { Analytics } from "@vercel/analytics/next";
+import { siteConfig } from "@/config/site"; // ✅ FIX: Import site config
 
-// 2. Configure the Google Font
 const dmSans = DM_Sans({ 
   subsets: ["latin"], 
-  // We keep the variable name the same so your CSS/Tailwind doesn't break
   variable: "--font-favorit", 
   weight: ["400", "500", "700", "800"],
   display: "swap",
 });
 
+// ✅ FIX: Dynamically generate SEO from your fixed config. 
+// Child pages will now output correctly (e.g., "Events | E-Cell IISER Bhopal")
 export const metadata: Metadata = {
-  title: "E-Cell IISER Bhopal",
-  description:
-    "The Entrepreneurship Cell at IISER Bhopal, where scientific rigor meets the audacity to build.",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} | ${siteConfig.tagline}`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
 };
 
 export default function RootLayout({
@@ -34,9 +50,9 @@ export default function RootLayout({
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "E-Cell IISER Bhopal",
-    "url": "https://ecell.iiserbhopal.ac.in",
-    "logo": "https://ecell.iiserbhopal.ac.in/logo.png",
+    "name": siteConfig.name,
+    "url": siteConfig.url,
+    "logo": `${siteConfig.url}/logo.png`,
     "sameAs": [
       "https://www.linkedin.com/company/ecell-sdc-iiser-bhopal/",
       "https://www.instagram.com/ecell_iiserb"
@@ -55,13 +71,13 @@ export default function RootLayout({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "E-Cell IISER Bhopal",
-    "url": "https://ecell.iiserbhopal.ac.in",
+    "name": siteConfig.name,
+    "url": siteConfig.url,
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://ecell.iiserbhopal.ac.in/search?q={search_term_string}"
+        "urlTemplate": `${siteConfig.url}/search?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -70,17 +86,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      // 3. Inject the dmSans variable here
       className={`${GeistSans.variable} ${GeistMono.variable} ${dmSans.variable} dark`}
       suppressHydrationWarning
     >
       <head>
-        {/* Inject Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
-        {/* Inject WebSite Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}

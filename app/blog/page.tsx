@@ -1,5 +1,6 @@
+// app/blog/page.tsx
 export const metadata = {
-  title: "Blog | E-Cell IISER Bhopal",
+  title: "Blog",
   description: "Read the latest articles, startup insights, and entrepreneurship news from E-Cell IISER Bhopal.",
 };
 

@@ -549,7 +549,8 @@ export default function Hero() {
             variants={itemVariants}
             className="text-lg text-white/50 leading-relaxed mb-10 max-w-lg font-light"
           >
-            We provide the resources, mentorship, and platform to help visionary minds translate academic excellence into real-world impact.
+            {/* ✅ SEO FIX: Pulls the keyword-rich text from siteConfig instead of hardcoded string */}
+            {siteConfig.hero.subheadline}
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">

@@ -1,5 +1,6 @@
+// app/events/page.tsx
 export const metadata = {
-  title: "Events | E-Cell IISER Bhopal",
+  title: "Events",
   description: "Discover upcoming pitch days, hackathons, and speaker sessions hosted by E-Cell IISER Bhopal.",
 };
 

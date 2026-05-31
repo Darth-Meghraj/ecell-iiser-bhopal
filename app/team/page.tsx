@@ -1,5 +1,6 @@
+// app/team/page.tsx
 export const metadata = {
-  title: "Our Team | E-Cell IISER Bhopal",
+  title: "Our Team",
   description: "Meet the passionate students and faculty behind the Entrepreneurship Cell at IISER Bhopal.",
 };
 

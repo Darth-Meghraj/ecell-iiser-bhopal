@@ -114,7 +114,7 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")}>
+            <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")} aria-label="Pitch your idea from desktop navigation">
               <motion.button
                 whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(34,211,238,0.2)" }}
                 whileTap={{ scale: 0.97 }}
@@ -129,7 +129,7 @@ export default function Navbar() {
           <button
             className="md:hidden p-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:bg-white/[0.05] transition-all"
             onClick={() => setMobileOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label="Toggle mobile menu"
           >
             {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
@@ -156,9 +156,9 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")}> 
+            <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")} aria-label="Submit your pitch from mobile menu"> 
               <button className="w-full mt-2 px-4 py-3 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-sm font-semibold">
-                Pitch Your Idea
+                Submit Your Pitch
               </button>
             </Link>
           </motion.div>

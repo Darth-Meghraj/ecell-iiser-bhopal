@@ -155,6 +155,7 @@ function BentoCard({
             className={[
               "w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110",
               styles.iconBg,
+              styles.iconColor,
             ].join(" ")}
           >
             <Icon size={22} className={styles.iconColor} />
@@ -188,7 +189,8 @@ function BentoCard({
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function BentoGrid() {
-  const { sectionLabel, headline, items } = siteConfig.pillars;
+  // ✅ SEO FIX: Extracted the new 'description' property
+  const { sectionLabel, headline, description, items } = siteConfig.pillars;
 
   return (
     <section id="vision" className="relative py-32 px-4">
@@ -205,15 +207,19 @@ export default function BentoGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16 max-w-2xl"
+          className="mb-16 max-w-3xl" // ✅ Increased max-width slightly for the new text
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-white/40 text-xs font-mono tracking-widest uppercase mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
             {sectionLabel}
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
             {headline}
           </h2>
+          {/* ✅ SEO FIX: Injected the high-word-count, keyword-rich description here */}
+          <p className="text-lg text-white/50 leading-relaxed font-light">
+            {description}
+          </p>
         </motion.div>
 
         {/* Bento Grid */}
