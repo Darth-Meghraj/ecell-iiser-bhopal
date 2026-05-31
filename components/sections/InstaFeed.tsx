@@ -34,7 +34,7 @@ export default function InstaFeed() {
           transition={{ delay: 0.2 }}
           className="w-full max-w-[400px] bg-white/[0.02] border border-white/[0.08] rounded-3xl p-4 md:p-6 backdrop-blur-md shadow-2xl"
         >
-          {/* Sanitized HTML5 standard iframe with no legacy properties */}
+          {/* Sanitized HTML5 standard iframe */}
           <iframe
             src={`https://www.instagram.com/p/${POST_ID}/embed`}
             className="w-full aspect-[4/5] rounded-xl bg-black border-0 overflow-hidden"
@@ -42,13 +42,18 @@ export default function InstaFeed() {
             title="Instagram Post from E-Cell IISER Bhopal"
           ></iframe>
           
-          {/* SEO / Crawler Fallback (Visually Hidden) */}
-          <div className="sr-only">
-            <h2>Latest from E-Cell</h2>
-            <p>Follow E-Cell IISER Bhopal on Instagram for the latest updates on pitch events, startup incubation, and campus entrepreneurship news.</p>
+          {/* VISIBLE SEO / Crawler Content Block */}
+          <div className="mt-5 p-4 bg-white/[0.03] rounded-xl border border-white/[0.05]">
+            <h3 className="text-white font-semibold text-sm mb-1">
+              Latest from E-Cell
+            </h3>
+            <p className="text-white/60 text-xs leading-relaxed">
+              Join E-Cell IISER Bhopal for the latest updates on upcoming pitch events, startup incubation programs, and campus entrepreneurship news.
+            </p>
           </div>
 
-          <div className="mt-6 text-center flex justify-center">
+          {/* Social Link */}
+          <div className="mt-5 text-center flex justify-center">
              <a 
                href={siteConfig.footer.socials.find((s: any) => s.label === "Instagram")?.href || "#"} 
                target="_blank" 

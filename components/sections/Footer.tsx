@@ -63,8 +63,8 @@ export default function Footer() {
                 alt="E-Cell Logo" 
                 width={36} 
                 height={36} 
-                className="object-contain" // Removed w-auto and h-auto from here
-                style={{ width: "auto", height: "auto" }} // Added explicit styles to satisfy Next.js
+                className="object-contain" 
+                style={{ width: "auto", height: "auto" }} 
               />
               <div>
                 <div className="text-white font-bold text-sm tracking-tight">{shortName}</div>
@@ -122,6 +122,18 @@ export default function Footer() {
                 <div className="text-xs mt-1">{footer.address}</div>
               </div>
             </div>
+
+            {/* Moved IISER Bhopal Link */}
+            <a
+              href="https://www.iiserb.ac.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
+            >
+              <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
+              IISER Bhopal(Indian Institute of Science Education and Research Bhopal)
+              <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
+            </a>
           </motion.div>
 
           {/* Quick links column */}
@@ -154,18 +166,6 @@ export default function Footer() {
                   </li>
                 );
               })}
-              <li>
-                <a
-                  href="https://www.iiserb.ac.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
-                >
-                  <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
-                  IISER Bhopal
-                  <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
-                </a>
-              </li>
             </ul>
           </motion.div>
         </div>
