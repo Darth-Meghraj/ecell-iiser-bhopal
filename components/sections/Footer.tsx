@@ -26,14 +26,20 @@ export default function Footer() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
+    
     if (isMobile) {
+      // Opens the OS default email app (Apple Mail, Gmail app, etc.)
       window.location.href = `mailto:${footer.email}`;
     } else {
-      window.open(
-        `https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`,
-        "_blank",
-        "noopener,noreferrer"
-      );
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`;
+      
+      // Try opening in a new tab
+      const newTab = window.open(gmailUrl, "_blank", "noopener,noreferrer");
+      
+      // If the browser's pop-up blocker stops the new tab, fallback to the same tab
+      if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+        window.location.href = gmailUrl;
+      }
     }
   };
 
