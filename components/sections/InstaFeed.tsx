@@ -39,8 +39,15 @@ export default function InstaFeed() {
             src={`https://www.instagram.com/p/${POST_ID}/embed`}
             className="w-full aspect-[4/5] rounded-xl bg-black border-0 overflow-hidden"
             allow="encrypted-media"
+            title="Instagram Post from E-Cell IISER Bhopal"
           ></iframe>
           
+          {/* SEO / Crawler Fallback (Visually Hidden) */}
+          <div className="sr-only">
+            <h2>Latest from E-Cell</h2>
+            <p>Follow E-Cell IISER Bhopal on Instagram for the latest updates on pitch events, startup incubation, and campus entrepreneurship news.</p>
+          </div>
+
           <div className="mt-6 text-center flex justify-center">
              <a 
                href={siteConfig.footer.socials.find((s: any) => s.label === "Instagram")?.href || "#"} 

@@ -5,11 +5,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const siteConfig = {
-  name: "E-Cell IISER Bhopal",
+  name: "E-Cell IISER Bhopal | Student Startup Incubator & Pitch Portal",
   shortName: "E-Cell",
   tagline: "Engineering the Future of Business at IISER Bhopal",
   description:
-    "The Entrepreneurship Cell at IISER Bhopal — where scientific rigor meets the audacity to build. We're seeding the next generation of deep-tech founders.",
+    "E-Cell IISER Bhopal is the student entrepreneurship cell supporting science-backed startups, pitch programs, and deep-tech incubation at IISER Bhopal.",
   url: "https://ecell.iiserbhopal.ac.in",
   ogImage: "/og.png",
 
@@ -56,7 +56,7 @@ export const siteConfig = {
         icon: "Zap",
         title: "Hackathons & Sprints",
         description:
-          "High-energy events where scientific rigor meets rapid prototyping. Build cross-disciplinary teams to tackle real-world problems and launch MVP solutions over a single weekend.",
+          "Join our annual hackathons and sprints to build innovative solutions, meet co-founders, and compete for seed funding.",
         accent: "violet",
         size: "small",
         comingSoon: "First Hackathon: Aug 2026(Hopefully!!!)",
@@ -120,7 +120,7 @@ export const siteConfig = {
       { label: "Vision", href: "#vision" },
       { label: "Pitch Portal", href: "#pitch" },
       { label: "IICE IISER Bhopal", href: "https://iice.iiserb.ac.in/" },
-   ],
+    ],
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com/company/ecell-sdc-iiser-bhopal/", icon: "Linkedin" },
       { label: "Instagram", href: "https://www.instagram.com/ecell_iiserb?igsh=c2U2c3F4YTM5ejZs", icon: "Instagram" },
