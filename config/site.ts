@@ -15,9 +15,12 @@ export const siteConfig = {
 
   // ── Navigation ────────────────────────────────────────────────────────────
   nav: [
-    { label: "Vision", href: "#vision" },
-    { label: "Pitch Portal", href: "#pitch" },
-    { label: "Contact", href: "#contact" }, // Updated Button
+    { label: "Vision", href: "/#vision" },
+    { label: "Team", href: "/team" },
+    { label: "Events", href: "/events" },
+    { label: "Blog", href: "/blog" },
+    { label: "Pitch Portal", href: "/#pitch" },
+    { label: "Contact", href: "/#contact" },
   ],
 
   // ── Hero Section ─────────────────────────────────────────────────────────
@@ -26,8 +29,8 @@ export const siteConfig = {
     headline: ["Turn Breakthroughs", "Into Businesses", "at IISER Bhopal"],
     subheadline:
       "Stop waiting. Start shipping. E-Cell is the premier ecosystem for IISER students building the next generation of science-backed companies.",
-    ctaPrimary: { label: "Pitch Your Idea", href: "#pitch" },
-    ctaSecondary: { label: "Our Vision", href: "#vision" },
+    ctaPrimary: { label: "Pitch Your Idea", href: "/#pitch" },
+    ctaSecondary: { label: "Our Vision", href: "/#vision" },
     stats: [
       { value: "∞", label: "Ideas Welcome" },
       { value: "2024", label: "Founding Year" },
@@ -117,8 +120,11 @@ export const siteConfig = {
     address: "Bhauri, Bhopal Bypass Road, Bhopal - 462066, Madhya Pradesh",
     email: "iice@iiserb.ac.in",
     footerLinks: [
-      { label: "Vision", href: "#vision" },
-      { label: "Pitch Portal", href: "#pitch" },
+      { label: "Vision", href: "/#vision" },
+      { label: "Team", href: "/team" },
+      { label: "Events", href: "/events" },
+      { label: "Blog", href: "/blog" },
+      { label: "Pitch Portal", href: "/#pitch" },
       { label: "IICE IISER Bhopal", href: "https://iice.iiserb.ac.in/" },
     ],
     socials: [

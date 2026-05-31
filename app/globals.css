@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* <-- ADDED: Prevents fixed navbar from overlapping section titles */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

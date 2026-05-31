@@ -3,13 +3,13 @@ import { MetadataRoute } from 'next'
 import { siteConfig } from '@/config/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteConfig.url,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    // Add additional routes here as the site grows (e.g., /vision, /pitch)
-  ]
+  // Define our routes (excluding /programs as requested)
+  const routes = ['', '/team', '/events', '/blog'];
+
+  return routes.map((route) => ({
+    url: `${siteConfig.url}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: route === '' ? 1 : 0.8, // Homepage gets max priority
+  }));
 }

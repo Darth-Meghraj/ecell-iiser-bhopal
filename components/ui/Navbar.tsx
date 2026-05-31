@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image"; // <-- Added Image import
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -37,7 +37,6 @@ export default function Navbar() {
         <nav className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            {/* Swapped placeholder for actual Image */}
             <Image 
               src="/logo.png" 
               alt="E-Cell Logo" 
@@ -57,7 +56,7 @@ export default function Navbar() {
             {siteConfig.nav.map((link) => (
               <li key={link.href}>
                 <Link
-                  href={link.href}
+                  href={link.href as any} // <-- Added 'as any' here
                   className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/[0.05] transition-all duration-200 font-mono"
                 >
                   {link.label}
@@ -68,7 +67,7 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="#pitch">
+            <Link href="/#pitch"> {/* <-- Also updated this to absolute root */}
               <motion.button
                 whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(34,211,238,0.2)" }}
                 whileTap={{ scale: 0.97 }}
@@ -103,14 +102,14 @@ export default function Navbar() {
             {siteConfig.nav.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={link.href as any} // <-- Added 'as any' here
                 onClick={() => setMobileOpen(false)}
                 className="px-4 py-3 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/[0.05] transition-all font-mono"
               >
                 {link.label}
               </Link>
             ))}
-            <Link href="#pitch" onClick={() => setMobileOpen(false)}>
+            <Link href="/#pitch" onClick={() => setMobileOpen(false)}> {/* <-- Also updated this to absolute root */}
               <button className="w-full mt-2 px-4 py-3 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-sm font-semibold">
                 Pitch Your Idea
               </button>
