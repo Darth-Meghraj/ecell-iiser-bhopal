@@ -7,6 +7,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Environment } from "@react-three/drei";
 import * as THREE from "three";
+import { siteConfig } from "@/config/site"; 
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Procedural Texture Generator (Thin Lined Hollow Honeycombs)
@@ -370,7 +371,6 @@ function RubikGroup() {
     const velocity = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
     if (velocity > 0.008 && hoveredCubie.current) {
-      // FIX: Changed delay from 3.5 seconds down to 1.0 seconds
       interactionTimer.current = 1.0;
 
       if (userQueue.current.length === 0 && activePivots.current.length === 0) {
@@ -505,14 +505,15 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center bg-transparent overflow-hidden">
+    <section className="relative min-h-screen flex flex-col bg-transparent overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none z-0"
         style={{ background: "radial-gradient(circle at 75% 50%, rgba(14, 30, 56, 0.5) 0%, transparent 60%)" }}
       />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-6 md:px-12 py-24 min-h-screen">
+      {/* Main Content Area */}
+      <div className="relative z-10 flex-grow w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-6 md:px-12 py-12 pt-24 lg:pt-32">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -547,15 +548,18 @@ export default function Hero() {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            
+            {/* FIX APPLIED: Button styling matched perfectly to the cyan Navbar button */}
             <Link href="#pitch">
-              <button className="group inline-flex items-center gap-3 px-8 py-4 rounded-md bg-white text-black font-semibold text-sm transition-all hover:bg-gray-200">
+              <button className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-semibold text-sm transition-all hover:bg-cyan-400/20 shadow-[0_0_20px_rgba(34,211,238,0.15)] hover:shadow-[0_0_25px_rgba(34,211,238,0.25)]">
                 Join the E-Cell
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
-            <Link href={"/portfolio" as any}>
-              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-md border border-white/15 text-white/80 font-medium text-sm hover:border-white/40 hover:text-white hover:bg-white/5 transition-all">
-                Explore Startups
+            
+            <Link href="#vision">
+              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-white/15 text-white/80 font-medium text-sm hover:border-white/40 hover:text-white hover:bg-white/5 transition-all">
+                Vision
               </button>
             </Link>
           </motion.div>
@@ -565,13 +569,42 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-          className="flex-shrink-0 w-full max-w-[400px] lg:max-w-none lg:w-[400px] xl:w-[450px] aspect-square relative cursor-grab active:cursor-grabbing lg:ml-auto mt-12 lg:-mt-12"
+          className="flex-shrink-0 w-full max-w-[400px] lg:max-w-none lg:w-[400px] xl:w-[450px] aspect-square relative cursor-grab active:cursor-grabbing lg:ml-auto mt-4 lg:mt-0"
         >
           <div className="absolute inset-0 w-full h-full">
             <CubeScene />
           </div>
         </motion.div>
       </div>
+
+      {/* FIX APPLIED: 
+          - Increased max-width to max-w-4xl for better breathability
+          - Increased padding inside cards (py-5 px-3)
+          - Increased text sizes (text-2xl/3xl for values, text-[10px]/xs for labels)
+          - Adjusted the tint to match the cyan aesthetic slightly better
+      */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="relative z-20 w-full max-w-4xl mx-auto px-6 md:px-12 pb-10 lg:pb-14"
+      >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full">
+          {siteConfig.hero.stats.map((stat, i) => (
+            <div
+              key={i}
+              className="bg-[#0f172a]/40 border border-cyan-400/10 rounded-xl py-5 px-3 flex flex-col items-center justify-center backdrop-blur-xl shadow-xl transition-all hover:border-cyan-400/20 hover:bg-[#0f172a]/60"
+            >
+              <div className="text-2xl sm:text-3xl font-black text-white/90 mb-1 tracking-tight">
+                {stat.value}
+              </div>
+              <div className="text-[10px] sm:text-xs font-mono tracking-widest uppercase text-white/40 text-center">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }
