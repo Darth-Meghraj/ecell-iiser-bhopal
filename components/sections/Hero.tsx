@@ -528,15 +528,20 @@ export default function Hero() {
           </motion.div>
 
           <motion.div variants={itemVariants} className="mb-8">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-white font-serif tracking-tight">
+            {/* SEO-optimized visually hidden H1 */}
+            <h1 className="sr-only">Entrepreneurship Cell at IISER Bhopal — Student Startup Incubator</h1>
+            
+            {/* Changed from h1 to h2 for semantic HTML, keeping exact styling */}
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-white font-serif tracking-tight">
               <span className="block text-white/80 font-light italic">Turn Breakthroughs</span>
               <span className="block font-medium mt-1">Into Businesses.</span>
-            </h1>
+            </h2>
 
             <div className="mt-8 flex items-center gap-4">
-              <h2 className="text-lg sm:text-xl text-white/70 font-light tracking-wide">
+              {/* Changed from h2 to h3 to follow the h1 -> h2 -> h3 semantic flow */}
+              <h3 className="text-lg sm:text-xl text-white/70 font-light tracking-wide">
                 At <span className="font-semibold text-white/90">IISER Bhopal</span>
-              </h2>
+              </h3>
             </div>
           </motion.div>
 
@@ -549,7 +554,6 @@ export default function Hero() {
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             
-            {/* FIX APPLIED: Button styling matched perfectly to the cyan Navbar button */}
             <Link href="#pitch">
               <button className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-semibold text-sm transition-all hover:bg-cyan-400/20 shadow-[0_0_20px_rgba(34,211,238,0.15)] hover:shadow-[0_0_25px_rgba(34,211,238,0.25)]">
                 Join the E-Cell
@@ -577,12 +581,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* FIX APPLIED: 
-          - Increased max-width to max-w-4xl for better breathability
-          - Increased padding inside cards (py-5 px-3)
-          - Increased text sizes (text-2xl/3xl for values, text-[10px]/xs for labels)
-          - Adjusted the tint to match the cyan aesthetic slightly better
-      */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

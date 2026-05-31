@@ -56,7 +56,7 @@ export const siteConfig = {
         icon: "Zap",
         title: "Hackathons & Sprints",
         description:
-          "NA",
+          "High-energy events where scientific rigor meets rapid prototyping. Build cross-disciplinary teams to tackle real-world problems and launch MVP solutions over a single weekend.",
         accent: "violet",
         size: "small",
         comingSoon: "First Hackathon: Aug 2026(Hopefully!!!)",

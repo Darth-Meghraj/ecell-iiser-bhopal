@@ -7,14 +7,13 @@ import BentoGrid from "@/components/sections/BentoGrid";
 import PitchPortal from "@/components/sections/PitchPortal";
 import Footer from "@/components/sections/Footer";
 import InstaFeed from "@/components/sections/InstaFeed";
-import StarStream from "@/components/ui/StarStream";
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: "E-Cell IISER Bhopal | Student Startup Incubator",
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.description,
+  description: "The Entrepreneurship Cell at IISER Bhopal empowers students to turn scientific breakthroughs into scalable businesses. Join our deep-tech incubator, hackathons, and global mentorship network.",
   keywords: [
     "E-Cell", "IISER Bhopal", "Entrepreneurship Cell", "Startup",
     "Student Entrepreneurs", "Deep Tech", "Science Startup",
@@ -24,7 +23,8 @@ export const metadata: Metadata = {
   creator: "E-Cell IISER Bhopal",
   openGraph: {
     type: "website", locale: "en_IN", url: siteConfig.url,
-    title: siteConfig.name, description: siteConfig.description,
+    title: "E-Cell IISER Bhopal | Student Startup Incubator", 
+    description: "The Entrepreneurship Cell at IISER Bhopal empowers students to turn scientific breakthroughs into scalable businesses.",
     siteName: siteConfig.name,
     images: [{ url: siteConfig.ogImage, width: 1200, height: 630 }],
   },
@@ -44,7 +44,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-screen">
-     <StarStream />
       {/* 1. Hybrid cinematic intro — auto-plays + scroll-driven */}
       <ScrollIntro />
 
