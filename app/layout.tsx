@@ -17,8 +17,6 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-// ✅ FIX: Dynamically generate SEO from your fixed config. 
-// Child pages will now output correctly (e.g., "Events | E-Cell IISER Bhopal")
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {

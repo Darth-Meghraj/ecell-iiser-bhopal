@@ -1,8 +1,6 @@
 "use server";
 // actions/pitch.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Next.js Server Action: Handles pitch form submissions securely on the server.
-// ─────────────────────────────────────────────────────────────────────────────
 
 import { pitchFormSchema, type PitchFormValues } from "@/config/pitch-schema";
 

@@ -1,16 +1,10 @@
 // config/site.ts
-// ─────────────────────────────────────────────────────────────────────────────
-// Single source of truth for all static text, links, and configurable values.
-// Update this file without touching any component code.
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const siteConfig = {
-  // ✅ METADATA FIX: Removed the hardcoded "|" suffix so Next.js templates work correctly
   name: "E-Cell IISER Bhopal",
   shortName: "E-Cell",
   tagline: "Student Startup Incubator & Pitch Portal",
   
-  // ✅ METADATA FIX: Shortened to ~151 characters to easily pass the 1000-pixel length audit
   description:
     "E-Cell IISER Bhopal empowers students to build science-backed startups. Join our deep-tech incubator, pitch programs, and global mentorship network.",
     
@@ -31,7 +25,6 @@ export const siteConfig = {
   hero: {
     badge: "From Lab to Launchpad ",
     headline: ["Turn Breakthroughs", "Into Businesses", "at IISER Bhopal"],
-    // ✅ SEO FIX: Heavily injected keywords to match H1 and boosted length
     subheadline:
       "Welcome to the Entrepreneurship Cell at IISER Bhopal. As the premier student startup incubator on campus, we provide the resources, mentorship, and platform to help visionary minds translate academic excellence into real-world impact. Stop waiting. Start building your startup today.",
     ctaPrimary: { label: "Pitch Your Idea", href: "/#pitch" },
@@ -48,8 +41,6 @@ export const siteConfig = {
   pillars: {
     sectionLabel: "What We're Building",
     headline: " Pillars of the Entrepreneurial Ecosystem",
-    // ✅ SEO FIX: Added a new descriptive paragraph to boost total word count 
-    // and reinforce the "student startup incubator" keywords.
     description: 
       "Our student startup incubator bridges the gap between scientific research at IISER Bhopal and commercial enterprise. The Entrepreneurship Cell fosters a culture of innovation, nurturing student founders from ideation to execution. Whether you are developing deep-tech software, hardware prototypes, or sustainable business models, our ecosystem provides the comprehensive support needed to launch successful ventures.",
     items: [
@@ -110,7 +101,6 @@ export const siteConfig = {
   pitchPortal: {
     sectionLabel: "Pitch Portal",
     headline: "Your Idea Deserves a Stage",
-    // ✅ SEO FIX: Expanded text to capture keywords naturally and boost length
     subheadline:
       "Every massive enterprise started as a simple idea. Fill out the form below to submit your venture to our student startup incubator. Every submission is rigorously reviewed by the Entrepreneurship Cell founding team, and top applicants receive 1:1 mentorship sessions.",
     successMessage:

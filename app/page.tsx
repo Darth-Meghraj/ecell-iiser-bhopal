@@ -9,10 +9,8 @@ import Footer from "@/components/sections/Footer";
 import InstaFeed from "@/components/sections/InstaFeed";
 
 export const metadata: Metadata = {
-  // ✅ FIX: Removed the 'template' object. Just pass the strict string for the homepage.
   title: "E-Cell IISER Bhopal | Student Startup Incubator",
   
-  // ✅ FIX: Shortened description to ~148 chars to fix the 1200px warning.
   description: "E-Cell IISER Bhopal empowers students to turn scientific breakthroughs into scalable startups. Join our deep-tech incubator and mentorship network.",
   keywords: [
     "E-Cell", "IISER Bhopal", "Entrepreneurship Cell", "Startup",
