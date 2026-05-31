@@ -11,7 +11,6 @@ import { Mail, MapPin, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 import { siteConfig } from "@/config/site";
 
-// FIX APPLIED: Changed React.ElementType to React.ComponentType<any> to allow the size prop
 const SOCIAL_ICONS: Record<string, React.ComponentType<any>> = {
   Linkedin: FaLinkedin,
   Instagram: FaInstagram,
@@ -28,8 +27,7 @@ export default function Footer() {
       navigator.userAgent
     );
     if (isMobile) {
-      // Opens Gmail app on both iOS and Android
-      window.location.href = `googlegmail://co?to=${footer.email}`;
+      window.location.href = `mailto:${footer.email}`;
     } else {
       window.open(
         `https://mail.google.com/mail/?view=cm&fs=1&to=${footer.email}`,
@@ -59,7 +57,8 @@ export default function Footer() {
                 alt="E-Cell Logo" 
                 width={36} 
                 height={36} 
-                className="object-contain w-auto h-auto"
+                className="object-contain" // Removed w-auto and h-auto from here
+                style={{ width: "auto", height: "auto" }} // Added explicit styles to satisfy Next.js
               />
               <div>
                 <div className="text-white font-bold text-sm tracking-tight">{shortName}</div>
@@ -70,7 +69,6 @@ export default function Footer() {
 
             <div className="flex items-center gap-3">
               {footer.socials.map((social: any) => {
-                // FIX APPLIED: Cast to React.ComponentType<any> here as well
                 const Icon = (SOCIAL_ICONS[social.icon] ?? ExternalLink) as React.ComponentType<any>;
                 return (
                   <motion.a
