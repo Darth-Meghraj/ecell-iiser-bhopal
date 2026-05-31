@@ -14,7 +14,6 @@ import * as THREE from "three";
 const createTextures = () => {
   if (typeof document === "undefined") return { mapHoney1: null, mapHoney2: null };
 
-  // Helper function to draw a hollow hexagon grid
   const drawHollowHoneycomb = (
     ctx: CanvasRenderingContext2D,
     hexRadius: number,
@@ -29,19 +28,16 @@ const createTextures = () => {
     ctx.lineWidth = lineWidth;
     ctx.lineJoin = "round";
 
-    // Spacing calculations based on hexagon geometry
     const hSpacing = hexRadius * Math.sqrt(3);
     const vSpacing = hexRadius * 1.5;
 
     for (let y = 0; y < 512 + vSpacing; y += vSpacing) {
-      // Offset every other row
       const isOffset = Math.round(y / vSpacing) % 2 !== 0;
       for (let x = 0; x < 512 + hSpacing; x += hSpacing) {
         const xPos = isOffset ? x + hSpacing / 2 : x;
         
         ctx.beginPath();
         for (let i = 0; i < 6; i++) {
-          // Standard angles for a flat-topped hexagon (0, 60, 120, 180, 240, 300 degrees)
           const angle = (Math.PI / 3) * i;
           const px = xPos + hexRadius * Math.cos(angle);
           const py = y + hexRadius * Math.sin(angle);
@@ -50,12 +46,11 @@ const createTextures = () => {
           else ctx.lineTo(px, py);
         }
         ctx.closePath();
-        ctx.stroke(); // Draw hollow outline
+        ctx.stroke(); 
       }
     }
   };
 
-  // --- Honeycomb Texture 1 (Smaller, Ultra-Thin lines) ---
   const canvasH1 = document.createElement("canvas");
   canvasH1.width = 512;
   canvasH1.height = 512;
@@ -63,14 +58,13 @@ const createTextures = () => {
   if (ctxH1) {
     drawHollowHoneycomb(
       ctxH1, 
-      12, // smaller radius
-      1,  // ultra-thin line
-      "#121e31", // Deep Midnight Blue BG
-      "#080d1766" // Dark Navy Line (with low opacity for subtlety)
+      12, 
+      1,  
+      "#121e31", 
+      "#080d1766" 
     );
   }
 
-  // --- Honeycomb Texture 2 (Medium, Slightly bolder/brighter lines) ---
   const canvasH2 = document.createElement("canvas");
   canvasH2.width = 512;
   canvasH2.height = 512;
@@ -78,16 +72,16 @@ const createTextures = () => {
   if (ctxH2) {
     drawHollowHoneycomb(
       ctxH2, 
-      20, // medium radius
-      1.5,// slightly thicker thin line
-      "#1c2d4a", // Slightly lighter slate navy base BG
-      "#080d17"  // Dark Navy Line
+      20, 
+      1.5,
+      "#1c2d4a", 
+      "#080d17"  
     );
   }
 
   const mapHoney1 = new THREE.CanvasTexture(canvasH1);
   mapHoney1.wrapS = mapHoney1.wrapT = THREE.RepeatWrapping;
-  mapHoney1.repeat.set(1.5, 1.5); // Increase repeating slightly
+  mapHoney1.repeat.set(1.5, 1.5); 
 
   const mapHoney2 = new THREE.CanvasTexture(canvasH2);
   mapHoney2.wrapS = mapHoney2.wrapT = THREE.RepeatWrapping;
@@ -119,7 +113,7 @@ const TIMING_CONFIG = {
   maxMoveSpeed: 1.3,
   minPause: 0.2,
   maxPause: 0.6,
-  userFlickSpeed: 0.85,
+  userFlickSpeed: 0.5, 
 };
 
 const SOLVE_SEQUENCE: RubikMove[] = [
@@ -144,7 +138,6 @@ const useCubeMaterials = () => {
   return useMemo(() => {
     const { mapHoney1, mapHoney2 } = createTextures();
 
-    // 1. Smooth Deep Blue (Used for bevels and flat variant)
     const matSmoothDark = new THREE.MeshPhysicalMaterial({
       color: "#121e31", 
       metalness: 0.3,
@@ -154,7 +147,6 @@ const useCubeMaterials = () => {
       envMapIntensity: 0.5,
     });
 
-    // 2. Smooth Slate Navy (Slightly lighter contrast face)
     const matSmoothLight = new THREE.MeshPhysicalMaterial({
       color: "#1c2d4a", 
       metalness: 0.2,
@@ -164,10 +156,9 @@ const useCubeMaterials = () => {
       envMapIntensity: 0.4,
     });
 
-    // 3. Honeycomb Variant 1 (Small pattern, low opacity lines)
     const matHollowHoney1 = new THREE.MeshPhysicalMaterial({
       map: mapHoney1,
-      bumpMap: mapHoney1, // Use map as bump for subtle relief
+      bumpMap: mapHoney1, 
       bumpScale: 0.01,
       metalness: 0.3,
       roughness: 0.6,
@@ -176,7 +167,6 @@ const useCubeMaterials = () => {
       envMapIntensity: 0.4,
     });
 
-    // 4. Honeycomb Variant 2 (Medium pattern, dark lines)
     const matHollowHoney2 = new THREE.MeshPhysicalMaterial({
       map: mapHoney2,
       bumpMap: mapHoney2,
@@ -204,7 +194,6 @@ interface CubieProps {
 
 const Cubie = React.forwardRef<THREE.Mesh, CubieProps>(({ initPos, materials, onHover }, ref) => {
   const faceMaterials = useMemo(() => {
-    // Array of possible face textures to randomly assign
     const pool = [
       materials.matSmoothDark, 
       materials.matSmoothLight, 
@@ -213,7 +202,6 @@ const Cubie = React.forwardRef<THREE.Mesh, CubieProps>(({ initPos, materials, on
     ];
     const getRandom = () => pool[Math.floor(Math.random() * pool.length)];
 
-    // Beveled edges (face 0) remain untextured, smooth deep blue
     return [
       materials.matSmoothDark, 
       getRandom(),  
@@ -381,8 +369,9 @@ function RubikGroup() {
 
     const velocity = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    if (velocity > 0.015 && hoveredCubie.current) {
-      interactionTimer.current = 3.5;
+    if (velocity > 0.008 && hoveredCubie.current) {
+      // FIX: Changed delay from 3.5 seconds down to 1.0 seconds
+      interactionTimer.current = 1.0;
 
       if (userQueue.current.length === 0 && activePivots.current.length === 0) {
         const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
@@ -469,7 +458,6 @@ function CubeScene() {
   return (
     <Canvas
       camera={{ position: [0, -1.2, 8.5], fov: 35 }}
-      // FIX APPLIED HERE: Replaced implicit "shadows" with explicit PCFShadowMap type
       shadows={{ type: THREE.PCFShadowMap }} 
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
@@ -477,10 +465,8 @@ function CubeScene() {
     >
       <Environment preset="city" />
       
-      {/* Soft blue-tinted ambient light */}
       <ambientLight intensity={0.5} color="#cbd5e1" />
       
-      {/* Main grazing light, tinted a cool sky blue to pop the textures */}
       <spotLight 
         position={[10, 15, 10]} 
         angle={0.3} 
@@ -490,7 +476,6 @@ function CubeScene() {
         castShadow 
       />
       
-      {/* Deep blue fill light from underneath for that moody tech shadow */}
       <spotLight 
         position={[-10, -10, -5]} 
         angle={0.5} 
@@ -548,7 +533,6 @@ export default function Hero() {
             </h1>
 
             <div className="mt-8 flex items-center gap-4">
-              <div className="h-[1px] w-12 bg-blue-500/50"></div>
               <h2 className="text-lg sm:text-xl text-white/70 font-light tracking-wide">
                 At <span className="font-semibold text-white/90">IISER Bhopal</span>
               </h2>
@@ -581,7 +565,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-          className="flex-shrink-0 w-full max-w-[400px] lg:max-w-none lg:w-[400px] xl:w-[450px] aspect-square relative cursor-grab active:cursor-grabbing lg:ml-auto -mt-20 lg:-mt-12"
+          className="flex-shrink-0 w-full max-w-[400px] lg:max-w-none lg:w-[400px] xl:w-[450px] aspect-square relative cursor-grab active:cursor-grabbing lg:ml-auto mt-12 lg:-mt-12"
         >
           <div className="absolute inset-0 w-full h-full">
             <CubeScene />
