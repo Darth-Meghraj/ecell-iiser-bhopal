@@ -30,6 +30,43 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // JSON-LD Schema: Organization
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "E-Cell IISER Bhopal",
+    "url": "https://ecell.iiserbhopal.ac.in",
+    "logo": "https://ecell.iiserbhopal.ac.in/logo.png",
+    "sameAs": [
+      "https://www.linkedin.com/company/ecell-sdc-iiser-bhopal/",
+      "https://www.instagram.com/ecell_iiserb"
+    ],
+    "contactPoint": { 
+      "@type": "ContactPoint", 
+      "email": "iice@iiserb.ac.in" 
+    },
+    "parentOrganization": { 
+      "@type": "EducationalOrganization", 
+      "name": "IISER Bhopal" 
+    }
+  };
+
+  // JSON-LD Schema: WebSite (Enables Sitelinks Search Box)
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "E-Cell IISER Bhopal",
+    "url": "https://ecell.iiserbhopal.ac.in",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://ecell.iiserbhopal.ac.in/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html
       lang="en"
@@ -37,6 +74,18 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} ${dmSans.variable} dark`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Inject Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
+        {/* Inject WebSite Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
       <body
         className={[
           GeistSans.className,
