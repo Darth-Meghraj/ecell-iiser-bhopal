@@ -48,7 +48,7 @@ const team = [
     image: "/team/ayush.jpg",
     role: "Junior Associate",
     department: "BTech · 2nd Year",
-    bio: "Learning deeply. Building relentlessly. (The 'tech' guy)",
+    bio: "Trying to keep ahead of the merge conflicts .",
     color: "cyan",
     socials: {
       linkedin: "https://www.linkedin.com/in/ayush-sarkar-04b7b5371",
