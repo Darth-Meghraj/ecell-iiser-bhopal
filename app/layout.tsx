@@ -100,8 +100,8 @@ export default function RootLayout({
       <body
         className={[
           GeistSans.className,
-          "bg-[#0a0a0a] text-white antialiased",
-          "selection:bg-cyan-400/20 selection:text-cyan-300",
+          "bg-[var(--color-bg)] text-[var(--color-slate-light)] antialiased",
+          "selection:bg-[var(--color-amber-dim)] selection:text-[var(--color-amber-hover)]",
         ].join(" ")}
       >
         <StarStream /> 

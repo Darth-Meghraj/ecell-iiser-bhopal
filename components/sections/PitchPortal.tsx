@@ -72,7 +72,7 @@ interface FieldWrapperProps {
 function FieldWrapper({ label, error, children, hint }: FieldWrapperProps) {
   return (
     <div className="group flex flex-col gap-2">
-      <label className="text-xs font-mono uppercase tracking-[0.15em] text-white/50 group-focus-within:text-cyan-400 transition-colors duration-300">
+      <label className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-slate-medium)] group-focus-within:text-[var(--color-amber-hover)] transition-colors duration-300">
         {label}
       </label>
       {children}
@@ -84,7 +84,7 @@ function FieldWrapper({ label, error, children, hint }: FieldWrapperProps) {
             animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{ opacity: 0, y: -6, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex items-center gap-1.5 text-xs text-rose-400 font-mono"
+            className="flex items-center gap-1.5 text-xs text-[var(--color-error)] font-mono"
           >
             <AlertTriangle size={12} />
             {error}
@@ -94,7 +94,7 @@ function FieldWrapper({ label, error, children, hint }: FieldWrapperProps) {
             key="hint"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-xs text-white/30 font-mono"
+            className="text-xs text-[var(--color-slate-dark)] font-mono"
           >
             {hint}
           </motion.p>
@@ -105,11 +105,11 @@ function FieldWrapper({ label, error, children, hint }: FieldWrapperProps) {
 }
 
 const inputBase =
-  "w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-white/20 " +
+  "w-full bg-[rgba(26,31,53,0.72)] border border-[var(--color-border)] rounded-xl px-4 py-3.5 text-sm text-[var(--color-slate-light)] placeholder:text-[var(--color-slate-dark)] " +
   "outline-none transition-all duration-300 " +
-  "focus:border-cyan-400/60 focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_rgba(34,211,238,0.08),0_0_20px_rgba(34,211,238,0.05)] " +
-  "hover:border-white/20 hover:bg-white/[0.04] " +
-  "aria-[invalid=true]:border-rose-500/50 aria-[invalid=true]:focus:shadow-[0_0_0_3px_rgba(244,63,94,0.08)]";
+  "focus:border-[var(--color-amber-mid)] focus:bg-[rgba(26,31,53,0.84)] focus:shadow-[0_0_0_3px_rgba(245,158,11,0.12),0_0_24px_rgba(245,158,11,0.08)] " +
+  "hover:border-[rgba(248,250,252,0.2)] hover:bg-[rgba(26,31,53,0.78)] " +
+  "aria-[invalid=true]:border-[rgba(239,68,68,0.7)] aria-[invalid=true]:focus:shadow-[0_0_0_3px_rgba(239,68,68,0.14)]";
 
 // ── Stage Selector ────────────────────────────────────────────────────────────
 
@@ -134,14 +134,14 @@ function StageSelector({ value, onChange, error }: StageSelectorProps) {
             className={[
               "relative px-4 py-3 rounded-xl border text-sm font-mono transition-all duration-300 text-left overflow-hidden",
               value === stage.value
-                ? "border-cyan-400/60 bg-cyan-400/10 text-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.1)]"
-                : "border-white/10 bg-white/[0.02] text-white/50 hover:border-white/20 hover:text-white/70 hover:bg-white/[0.04]",
+                ? "border-[var(--color-amber-mid)] bg-[var(--color-amber-dim)] text-[var(--color-amber-hover)] shadow-[0_0_16px_rgba(245,158,11,0.12)]"
+                : "border-[var(--color-border)] bg-[rgba(26,31,53,0.56)] text-[var(--color-slate-medium)] hover:border-[rgba(248,250,252,0.2)] hover:text-[var(--color-slate-light)] hover:bg-[rgba(26,31,53,0.74)]",
             ].join(" ")}
           >
             {value === stage.value && (
               <motion.span
                 layoutId="stage-pill"
-                className="absolute inset-0 bg-cyan-400/5 rounded-xl"
+                className="absolute inset-0 bg-[var(--color-amber-subtle)] rounded-xl"
               />
             )}
             <span className="relative z-10">{stage.label}</span>
@@ -163,11 +163,11 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
             <motion.div
               animate={{
                 scale: i < step ? 1 : 1,
-                backgroundColor: i < step ? "rgb(34,211,238)" : i === step - 1 ? "rgb(34,211,238)" : "rgba(255,255,255,0.1)",
+                backgroundColor: i < step ? "rgb(245,158,11)" : i === step - 1 ? "rgb(245,158,11)" : "rgba(148,163,184,0.18)",
               }}
               className="w-7 h-7 rounded-full flex items-center justify-center border transition-colors"
               style={{
-                borderColor: i < step ? "rgba(34,211,238,0.5)" : "rgba(255,255,255,0.1)",
+                borderColor: i < step ? "rgba(245,158,11,0.5)" : "rgba(248,250,252,0.12)",
               }}
             >
               {i < step - 1 ? (
@@ -180,16 +180,16 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
             </motion.div>
             {i === step - 1 && (
               <motion.div
-                className="absolute inset-0 rounded-full border border-cyan-400/40"
+                className="absolute inset-0 rounded-full border border-[var(--color-amber-mid)]"
                 animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
               />
             )}
           </div>
           {i < total - 1 && (
-            <div className="flex-1 h-px bg-white/10 relative overflow-hidden">
+            <div className="flex-1 h-px bg-[var(--color-divider)] relative overflow-hidden">
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-400 to-violet-500"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-amber-primary)] to-[var(--color-amber-hover)]"
                 animate={{ width: i < step - 1 ? "100%" : "0%" }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
               />
@@ -197,7 +197,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
           )}
         </React.Fragment>
       ))}
-      <span className="text-xs font-mono text-white/30 ml-1">
+      <span className="text-xs font-mono text-[var(--color-slate-dark)] ml-1">
         {step} / {total}
       </span>
     </div>
@@ -296,10 +296,10 @@ export default function PitchPortal() {
   };
 
   return (
-    <section id="pitch" className="relative py-32 px-4">
+    <section id="pitch" className="relative py-36 px-4">
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-violet-600/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[620px] h-[420px] bg-amber-500/10 rounded-full blur-[110px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -311,14 +311,14 @@ export default function PitchPortal() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-mono tracking-widest uppercase mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-amber-mid)] bg-[var(--color-amber-subtle)] text-[var(--color-amber-hover)] text-xs font-mono tracking-widest uppercase mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-amber-primary)] animate-pulse" />
             {sectionLabel}
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-slate-light)] tracking-tight mb-4">
             {headline}
           </h2>
-          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-[var(--color-slate-medium)] text-lg max-w-xl mx-auto leading-relaxed">
             {subheadline}
           </p>
         </motion.div>
@@ -333,13 +333,13 @@ export default function PitchPortal() {
         >
           <div className="relative rounded-2xl overflow-hidden">
             {/* Glass border gradient */}
-            <div className="absolute inset-0 rounded-2xl p-px bg-gradient-to-br from-white/15 via-white/5 to-white/10 pointer-events-none" />
-            <div className="relative rounded-2xl bg-[#0d0d0f]/80 backdrop-blur-xl p-8 md:p-10">
+            <div className="absolute inset-0 rounded-2xl p-px bg-gradient-to-br from-[var(--color-border-glow)] via-[rgba(248,250,252,0.08)] to-[var(--color-divider)] pointer-events-none" />
+            <div className="relative rounded-2xl bg-[var(--color-surface-glass)] backdrop-blur-2xl p-8 md:p-10">
               {/* Subtle inner grid */}
               <div
-                className="absolute inset-0 rounded-2xl opacity-[0.03]"
+                className="absolute inset-0 rounded-2xl opacity-[0.04]"
                 style={{
-                  backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+                  backgroundImage: "linear-gradient(rgba(148,163,184,0.48) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.48) 1px, transparent 1px)",
                   backgroundSize: "40px 40px",
                 }}
               />
@@ -361,10 +361,10 @@ export default function PitchPortal() {
                         transition={{ duration: 0.3 }}
                         className="mb-8"
                       >
-                        <h3 className="text-xl font-bold text-white tracking-tight">
+                        <h3 className="text-xl font-bold text-[var(--color-slate-light)] tracking-tight">
                           {currentStepConfig.title}
                         </h3>
-                        <p className="text-sm text-white/40 mt-1 font-mono">
+                        <p className="text-sm text-[var(--color-slate-medium)] mt-1 font-mono">
                           {currentStepConfig.subtitle}
                         </p>
                       </motion.div>
@@ -458,7 +458,7 @@ export default function PitchPortal() {
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
-                          className="mt-4 px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center gap-2 text-xs text-rose-300 font-mono"
+                          className="mt-4 px-4 py-3 rounded-xl bg-[rgba(239,68,68,0.12)] border border-[rgba(239,68,68,0.4)] flex items-center gap-2 text-xs text-[rgba(248,113,113,0.95)] font-mono"
                         >
                           <AlertTriangle size={14} className="shrink-0" />
                           {serverError}
@@ -474,7 +474,7 @@ export default function PitchPortal() {
                           onClick={handleBack}
                           whileHover={{ x: -2 }}
                           whileTap={{ scale: 0.97 }}
-                          className="flex items-center gap-2 px-5 py-3 rounded-xl border border-white/10 text-white/50 text-sm hover:border-white/20 hover:text-white/70 transition-all duration-200 font-mono"
+                          className="flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-slate-medium)] text-sm hover:border-[rgba(248,250,252,0.2)] hover:text-[var(--color-slate-light)] transition-all duration-200 font-mono"
                         >
                           <ArrowLeft size={14} />
                           Back
@@ -489,7 +489,7 @@ export default function PitchPortal() {
                           onClick={handleNext}
                           whileHover={{ scale: 1.02, x: 2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-400 text-black text-sm font-semibold hover:bg-cyan-300 transition-all duration-200 shadow-[0_0_24px_rgba(34,211,238,0.25)]"
+                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-amber-primary)] text-[#111827] text-sm font-semibold hover:bg-[var(--color-amber-hover)] transition-all duration-200 shadow-[0_0_24px_rgba(245,158,11,0.28)]"
                         >
                           Continue
                           <ArrowRight size={14} />
@@ -500,7 +500,7 @@ export default function PitchPortal() {
                           disabled={isPending}
                           whileHover={!isPending ? { scale: 1.02 } : {}}
                           whileTap={!isPending ? { scale: 0.98 } : {}}
-                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_32px_rgba(34,211,238,0.2)]"
+                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-amber-primary)] to-[var(--color-amber-hover)] text-[#111827] text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_32px_rgba(245,158,11,0.26)]"
                         >
                           {isPending ? (
                             <>
@@ -523,7 +523,7 @@ export default function PitchPortal() {
           </div>
 
           {/* Disclaimer */}
-          <p className="text-center text-xs text-white/20 font-mono mt-6">
+          <p className="text-center text-xs text-[var(--color-slate-dark)] font-mono mt-6">
             Your idea is safe with us. We don&apos;t share submissions with third parties.
           </p>
         </motion.div>

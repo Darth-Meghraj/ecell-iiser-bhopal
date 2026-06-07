@@ -43,44 +43,44 @@ const ACCENT_STYLES: Record<
   }
 > = {
   cyan: {
-    iconBg: "bg-cyan-400/10",
-    iconColor: "text-cyan-400",
-    border: "hover:border-cyan-400/20",
-    glow: "group-hover:shadow-[0_0_60px_rgba(34,211,238,0.06)]",
-    badge: "bg-cyan-400/10 border-cyan-400/20",
-    badgeText: "text-cyan-300",
+    iconBg: "bg-[rgba(148,163,184,0.12)]",
+    iconColor: "text-[var(--color-slate-light)]",
+    border: "hover:border-[var(--color-border-glow)]",
+    glow: "group-hover:shadow-[0_0_60px_rgba(245,158,11,0.08)]",
+    badge: "bg-[var(--color-amber-subtle)] border-[var(--color-amber-mid)]",
+    badgeText: "text-[var(--color-amber-hover)]",
   },
   violet: {
-    iconBg: "bg-violet-400/10",
-    iconColor: "text-violet-400",
-    border: "hover:border-violet-400/20",
-    glow: "group-hover:shadow-[0_0_60px_rgba(139,92,246,0.06)]",
-    badge: "bg-violet-400/10 border-violet-400/20",
-    badgeText: "text-violet-300",
+    iconBg: "bg-[rgba(245,158,11,0.1)]",
+    iconColor: "text-[var(--color-amber-primary)]",
+    border: "hover:border-[var(--color-amber-mid)]",
+    glow: "group-hover:shadow-[0_0_60px_rgba(245,158,11,0.1)]",
+    badge: "bg-[var(--color-amber-subtle)] border-[var(--color-amber-mid)]",
+    badgeText: "text-[var(--color-amber-hover)]",
   },
   green: {
     iconBg: "bg-emerald-400/10",
     iconColor: "text-emerald-400",
-    border: "hover:border-emerald-400/20",
-    glow: "group-hover:shadow-[0_0_60px_rgba(52,211,153,0.06)]",
-    badge: "bg-emerald-400/10 border-emerald-400/20",
+    border: "hover:border-emerald-400/30",
+    glow: "group-hover:shadow-[0_0_60px_rgba(16,185,129,0.1)]",
+    badge: "bg-emerald-400/10 border-emerald-400/30",
     badgeText: "text-emerald-300",
   },
   amber: {
-    iconBg: "bg-amber-400/10",
-    iconColor: "text-amber-400",
-    border: "hover:border-amber-400/20",
-    glow: "group-hover:shadow-[0_0_60px_rgba(251,191,36,0.06)]",
-    badge: "bg-amber-400/10 border-amber-400/20",
-    badgeText: "text-amber-300",
+    iconBg: "bg-[var(--color-amber-dim)]",
+    iconColor: "text-[var(--color-amber-primary)]",
+    border: "hover:border-[var(--color-amber-mid)]",
+    glow: "group-hover:shadow-[0_0_60px_rgba(245,158,11,0.1)]",
+    badge: "bg-[var(--color-amber-dim)] border-[var(--color-amber-mid)]",
+    badgeText: "text-[var(--color-amber-hover)]",
   },
   rose: {
-    iconBg: "bg-rose-400/10",
-    iconColor: "text-rose-400",
-    border: "hover:border-rose-400/20",
-    glow: "group-hover:shadow-[0_0_60px_rgba(251,113,133,0.06)]",
-    badge: "bg-rose-400/10 border-rose-400/20",
-    badgeText: "text-rose-300",
+    iconBg: "bg-orange-500/10",
+    iconColor: "text-orange-400",
+    border: "hover:border-orange-400/30",
+    glow: "group-hover:shadow-[0_0_60px_rgba(249,115,22,0.1)]",
+    badge: "bg-orange-500/10 border-orange-400/30",
+    badgeText: "text-orange-300",
   },
 };
 
@@ -125,11 +125,11 @@ function BentoCard({
     >
       <div
         className={[
-          "group relative h-full rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-md p-6 md:p-8",
+          "group relative h-full rounded-2xl border border-[var(--color-border)] bg-[rgba(26,31,53,0.6)] backdrop-blur-xl p-6 md:p-8",
           "transition-all duration-500 cursor-default overflow-hidden",
           styles.border,
           styles.glow,
-          "hover:bg-white/[0.04]",
+          "hover:bg-[rgba(26,31,53,0.78)]",
         ].join(" ")}
       >
         {/* Corner gradient accent */}
@@ -147,7 +147,7 @@ function BentoCard({
         />
 
         {/* Subtle top border glow on hover */}
-        <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/0 to-transparent group-hover:via-white/20 transition-all duration-500 pointer-events-none" />
+        <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[var(--color-amber-subtle)] to-transparent group-hover:via-[var(--color-amber-mid)] transition-all duration-500 pointer-events-none" />
 
         <div className="relative z-10 flex flex-col h-full gap-5">
           {/* Icon */}
@@ -163,8 +163,8 @@ function BentoCard({
 
           {/* Content */}
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-white tracking-tight mb-3">{title}</h3>
-            <p className="text-sm text-white/50 leading-relaxed">{description}</p>
+            <h3 className="text-lg font-bold text-[var(--color-slate-light)] tracking-tight mb-3">{title}</h3>
+            <p className="text-sm text-[var(--color-slate-medium)] leading-relaxed">{description}</p>
           </div>
 
           {/* Coming soon badge */}
@@ -193,11 +193,11 @@ export default function BentoGrid() {
   const { sectionLabel, headline, description, items } = siteConfig.pillars;
 
   return (
-    <section id="vision" className="relative py-32 px-4">
+    <section id="vision" className="relative py-36 px-4">
       {/* Background orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-cyan-500/[0.04] rounded-full blur-[80px]" />
-        <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[80px]" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-amber-500/[0.07] rounded-full blur-[96px]" />
+        <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-slate-400/[0.08] rounded-full blur-[96px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -209,15 +209,15 @@ export default function BentoGrid() {
           transition={{ duration: 0.6 }}
           className="mb-16 max-w-3xl" // ✅ Increased max-width slightly for the new text
         >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-white/40 text-xs font-mono tracking-widest uppercase mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-border)] bg-[rgba(26,31,53,0.65)] text-[var(--color-slate-medium)] text-xs font-mono tracking-widest uppercase mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-amber-mid)]" />
             {sectionLabel}
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+          <h2 className="text-4xl md:text-5xl font-black text-[var(--color-slate-light)] tracking-tight leading-tight mb-6">
             {headline}
           </h2>
           {/* ✅ SEO FIX: Injected the high-word-count, keyword-rich description here */}
-          <p className="text-lg text-white/50 leading-relaxed font-light">
+          <p className="text-lg text-[var(--color-slate-medium)] leading-relaxed font-light">
             {description}
           </p>
         </motion.div>
@@ -235,11 +235,11 @@ export default function BentoGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 px-8 py-6 rounded-2xl border border-white/[0.07] bg-white/[0.02]"
+          className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-6 px-8 py-7 rounded-2xl border border-[var(--color-border)] bg-[rgba(26,31,53,0.58)] backdrop-blur-xl"
         >
           <div>
-            <p className="text-sm font-bold text-white mb-1">Want to shape what we build?</p>
-            <p className="text-xs text-white/40 font-mono">
+           <p className="text-sm font-bold text-[var(--color-slate-light)] mb-1">Want to shape what we build?</p>
+           <p className="text-xs text-[var(--color-slate-medium)] font-mono">
               Members get a seat at the table — and early access to every program.
             </p>
           </div>
@@ -247,7 +247,7 @@ export default function BentoGrid() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300 text-sm font-semibold hover:bg-cyan-400/20 transition-all duration-200"
+              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--color-amber-mid)] bg-[var(--color-amber-dim)] text-[var(--color-amber-hover)] text-sm font-semibold hover:bg-[rgba(245,158,11,0.2)] transition-all duration-200"
             >
               Join as a Member
               <Rocket size={14} />
