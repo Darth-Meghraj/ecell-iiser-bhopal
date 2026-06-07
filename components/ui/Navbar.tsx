@@ -76,7 +76,7 @@ export default function Navbar() {
         className={[
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_0_40px_rgba(0,0,0,0.4)]"
+            ? "bg-[var(--color-surface-glass)] backdrop-blur-2xl border-b border-[var(--color-border)] shadow-[0_14px_40px_rgba(2,6,23,0.55)]"
             : "bg-transparent",
         ].join(" ")}
       >
@@ -91,9 +91,9 @@ export default function Navbar() {
               className="object-contain"
               style={{ width: "auto", height: "auto" }}
             />
-            <span className="text-white font-bold text-sm tracking-tight hidden sm:block">
+            <span className="text-[var(--color-slate-light)] font-bold text-sm tracking-tight hidden sm:block">
               E-Cell{" "}
-              <span className="text-white/30 font-normal font-mono text-xs">IISER Bhopal</span>
+              <span className="text-[var(--color-slate-medium)] font-normal font-mono text-xs">IISER Bhopal</span>
             </span>
           </Link>
 
@@ -104,7 +104,7 @@ export default function Navbar() {
                 <Link
                   href={link.href as any}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/[0.05] transition-all duration-200 font-mono"
+                  className="px-4 py-2 rounded-lg text-sm text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] hover:bg-[var(--color-amber-subtle)] transition-all duration-200 font-mono"
                 >
                   {link.label}
                 </Link>
@@ -116,9 +116,9 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")} aria-label="Pitch your idea from desktop navigation">
               <motion.button
-                whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(34,211,238,0.2)" }}
+                whileHover={{ scale: 1.03, boxShadow: "0 0 24px rgba(245,158,11,0.24)" }}
                 whileTap={{ scale: 0.97 }}
-                className="px-4 py-2 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-sm font-semibold hover:bg-cyan-400/20 transition-all duration-200"
+                className="px-4 py-2 rounded-xl bg-[var(--color-amber-dim)] border border-[var(--color-amber-mid)] text-[var(--color-amber-hover)] text-sm font-semibold hover:bg-[rgba(245,158,11,0.2)] transition-all duration-200"
               >
                 Pitch Your Idea
               </motion.button>
@@ -127,7 +127,7 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:bg-white/[0.05] transition-all"
+            className="md:hidden p-2 rounded-lg border border-[var(--color-border)] text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] hover:bg-[var(--color-amber-subtle)] transition-all"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle mobile menu"
           >
@@ -144,20 +144,20 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/[0.06] p-4 flex flex-col gap-2"
+            className="fixed top-16 left-0 right-0 z-40 bg-[rgba(5,8,19,0.94)] backdrop-blur-2xl border-b border-[var(--color-border)] p-4 flex flex-col gap-2"
           >
             {siteConfig.nav.map((link) => (
               <Link
                 key={link.href}
                 href={link.href as any}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="px-4 py-3 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/[0.05] transition-all font-mono"
+                className="px-4 py-3 rounded-xl text-sm text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] hover:bg-[var(--color-amber-subtle)] transition-all font-mono"
               >
                 {link.label}
               </Link>
             ))}
             <Link href="/#pitch" onClick={(e) => handleNavClick(e, "/#pitch")} aria-label="Submit your pitch from mobile menu"> 
-              <button className="w-full mt-2 px-4 py-3 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-sm font-semibold">
+              <button className="w-full mt-2 px-4 py-3 rounded-xl bg-[var(--color-amber-dim)] border border-[var(--color-amber-mid)] text-[var(--color-amber-hover)] text-sm font-semibold">
                 Submit Your Pitch
               </button>
             </Link>

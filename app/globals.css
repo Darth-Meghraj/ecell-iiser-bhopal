@@ -7,14 +7,31 @@
 
 /* ── CSS Custom Properties ───────────────────────────────────────────────── */
 :root {
-  --color-bg: #0a0a0a;
-  --color-surface: #0d0d0f;
-  --color-border: rgba(255, 255, 255, 0.07);
+  --color-bg: #050813;
+  --color-surface: #1a1f35;
+  --color-surface-glass: rgba(26, 31, 53, 0.75);
+  --color-border: rgba(248, 250, 252, 0.08);
+  --color-border-glow: rgba(245, 158, 11, 0.4);
+  --color-divider: rgba(148, 163, 184, 0.12);
+  --color-amber-primary: #f59e0b;
+  --color-amber-hover: #fcd34d;
+  --color-amber-dark: #d97706;
+  --color-amber-dim: rgba(245, 158, 11, 0.12);
+  --color-amber-mid: rgba(245, 158, 11, 0.35);
+  --color-amber-subtle: rgba(245, 158, 11, 0.08);
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f97316;
+  --color-slate-light: #e2e8f0;
+  --color-slate-medium: #94a3b8;
+  --color-slate-dark: #334155;
   --color-cyan: #22d3ee;
   --color-violet: #8b5cf6;
   --color-green: #34d399;
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), "Fira Code", monospace;
+  --font-display: var(--font-favorit), "Bebas Neue", "Impact", sans-serif;
+  --font-mono: var(--font-geist-mono), "DM Mono", "Fira Code", monospace;
+  --font-serif: "DM Serif Display", Georgia, serif;
+  --font-sans: var(--font-geist-sans), "Inter", "SF Pro Display", system-ui, sans-serif;
 }
 
 /* ── Global Resets ───────────────────────────────────────────────────────── */
@@ -33,8 +50,9 @@ html {
 
 body {
   background-color: var(--color-bg);
-  color: #ffffff;
+  color: var(--color-slate-light);
   margin: 0;
+  font-family: var(--font-sans);
 }
 
 :focus:not(:focus-visible) {
@@ -42,7 +60,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-cyan);
+  outline: 2px solid var(--color-amber-hover);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -71,15 +89,17 @@ h1, h2, h3, h4, h5, h6 {
 /* ── Glass Morphism & Tailwind Utilities ─────────────────────────────────── */
 @layer utilities {
   .glass {
-    backdrop-filter: blur(24px);
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    background-color: var(--color-surface-glass);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 14px 45px rgba(2, 6, 23, 0.55);
   }
 
   .glass-heavy {
     backdrop-filter: blur(40px);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background-color: rgba(26, 31, 53, 0.86);
+    border: 1px solid rgba(226, 232, 240, 0.12);
+    box-shadow: 0 24px 56px rgba(2, 6, 23, 0.65);
   }
   
   .glow-cyan {
@@ -107,9 +127,9 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #0d0d0f inset;
-  -webkit-text-fill-color: #ffffff;
-  caret-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px #1a1f35 inset;
+  -webkit-text-fill-color: #e2e8f0;
+  caret-color: #e2e8f0;
   transition: background-color 5000s ease-in-out 0s;
 }
 

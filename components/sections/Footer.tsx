@@ -44,8 +44,8 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="relative border-t border-white/[0.06]">
-      <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+    <footer id="contact" className="relative border-t border-[var(--color-border)] bg-[linear-gradient(180deg,rgba(26,31,53,0.22)_0%,rgba(5,8,19,0.75)_100%)]">
+      <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[var(--color-amber-mid)] to-transparent" />
 
       <div className="max-w-6xl mx-auto px-4 py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
@@ -67,11 +67,11 @@ export default function Footer() {
                 style={{ width: "auto", height: "auto" }} 
               />
               <div>
-                <div className="text-white font-bold text-sm tracking-tight">{shortName}</div>
-                <div className="text-white/30 text-xs font-mono">IISER Bhopal</div>
+                <div className="text-[var(--color-slate-light)] font-bold text-sm tracking-tight">{shortName}</div>
+                <div className="text-[var(--color-slate-medium)] text-xs font-mono">IISER Bhopal</div>
               </div>
             </div>
-            <p className="text-white/40 text-sm leading-relaxed mb-6">{footer.tagline}</p>
+            <p className="text-[var(--color-slate-medium)] text-sm leading-relaxed mb-6">{footer.tagline}</p>
 
             <div className="flex items-center gap-3">
               {footer.socials.map((social: any) => {
@@ -85,7 +85,7 @@ export default function Footer() {
                     aria-label={social.label}
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 hover:bg-white/[0.06] transition-all duration-200"
+                    className="w-9 h-9 rounded-lg border border-[var(--color-border)] bg-[rgba(26,31,53,0.52)] flex items-center justify-center text-[var(--color-slate-medium)] hover:text-[var(--color-amber-hover)] hover:border-[var(--color-border-glow)] hover:bg-[var(--color-amber-subtle)] transition-all duration-200"
                   >
                     <Icon size={16} />
                   </motion.a>
@@ -102,23 +102,23 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="space-y-4"
           >
-            <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-white/30 mb-5">
+            <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-slate-medium)] mb-5">
               Contact
             </h3>
             
             <a
               href={`mailto:${footer.email}`}
               onClick={handleEmailClick}
-              className="flex items-start gap-3 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 group"
+              className="flex items-start gap-3 text-sm text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] transition-colors duration-200 group"
             >
-              <Mail size={15} className="mt-0.5 shrink-0 text-white/20 group-hover:text-cyan-400 transition-colors" />
+              <Mail size={15} className="mt-0.5 shrink-0 text-[var(--color-slate-dark)] group-hover:text-[var(--color-amber-primary)] transition-colors" />
               <span className="font-mono">{footer.email}</span>
             </a>
             
-            <div className="flex items-start gap-3 text-sm text-white/40">
-              <MapPin size={15} className="mt-0.5 shrink-0 text-white/20" />
+            <div className="flex items-start gap-3 text-sm text-[var(--color-slate-medium)]">
+             <MapPin size={15} className="mt-0.5 shrink-0 text-[var(--color-slate-dark)]" />
               <div>
-                <div className="text-white/50">{footer.institution}</div>
+               <div className="text-[var(--color-slate-medium)]">{footer.institution}</div>
                 <div className="text-xs mt-1">{footer.address}</div>
               </div>
             </div>
@@ -128,9 +128,9 @@ export default function Footer() {
               href="https://www.iiserb.ac.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
+              className="text-sm text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] transition-colors duration-200 font-mono flex items-center gap-2 group"
             >
-              <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
+              <span className="w-3 h-px bg-[var(--color-slate-dark)] group-hover:w-5 group-hover:bg-[var(--color-amber-mid)] transition-all duration-300" />
               IISER Bhopal(Indian Institute of Science Education and Research Bhopal)
               <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
             </a>
@@ -143,7 +143,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-white/30 mb-5">
+            <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-slate-medium)] mb-5">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -155,9 +155,9 @@ export default function Footer() {
                       href={link.href as any}
                       target={isExternal ? "_blank" : undefined}
                       rel={isExternal ? "noopener noreferrer" : undefined}
-                      className="text-sm text-white/40 hover:text-white/80 transition-colors duration-200 font-mono flex items-center gap-2 group"
+                      className="text-sm text-[var(--color-slate-medium)] hover:text-[var(--color-slate-light)] transition-colors duration-200 font-mono flex items-center gap-2 group"
                     >
-                      <span className="w-3 h-px bg-white/20 group-hover:w-5 group-hover:bg-cyan-400/60 transition-all duration-300" />
+                      <span className="w-3 h-px bg-[var(--color-slate-dark)] group-hover:w-5 group-hover:bg-[var(--color-amber-mid)] transition-all duration-300" />
                       {link.label}
                       {isExternal && (
                         <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity ml-1" />
@@ -171,14 +171,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/[0.06]">
-          <p className="text-xs text-white/20 font-mono">{footer.copyright}</p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-[var(--color-border)]">
+          <p className="text-xs text-[var(--color-slate-dark)] font-mono">{footer.copyright}</p>
           <div className="flex items-center gap-4">
             {footer.legalLinks.map((link: { href: string; label: string }) => (
               <Link
                 key={link.href}
                 href={link.href as any}
-                className="text-xs text-white/20 hover:text-white/40 transition-colors font-mono"
+                className="text-xs text-[var(--color-slate-dark)] hover:text-[var(--color-slate-medium)] transition-colors font-mono"
               >
                 {link.label}
               </Link>

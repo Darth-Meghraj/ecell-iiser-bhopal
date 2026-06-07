@@ -465,14 +465,14 @@ function CubeScene() {
     >
       <Environment preset="city" />
       
-      <ambientLight intensity={0.5} color="#cbd5e1" />
+      <ambientLight intensity={0.55} color="#e2e8f0" />
       
       <spotLight 
         position={[10, 15, 10]} 
         angle={0.3} 
         penumbra={1} 
         intensity={1.5} 
-        color="#e0f2fe" 
+        color="#fcd34d" 
         castShadow 
       />
       
@@ -481,7 +481,7 @@ function CubeScene() {
         angle={0.5} 
         penumbra={1} 
         intensity={1.0} 
-        color="#3b82f6" 
+        color="#60a5fa" 
       />
       
       <RubikGroup />
@@ -509,7 +509,7 @@ export default function Hero() {
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none z-0"
-        style={{ background: "radial-gradient(circle at 75% 50%, rgba(14, 30, 56, 0.5) 0%, transparent 60%)" }}
+        style={{ background: "radial-gradient(circle at 75% 50%, rgba(245, 158, 11, 0.16) 0%, transparent 58%)" }}
       />
 
       {/* Main Content Area */}
@@ -521,8 +521,8 @@ export default function Hero() {
           className="flex-1 flex flex-col items-start text-left min-w-0 max-w-2xl pointer-events-auto"
         >
           <motion.div variants={itemVariants} className="mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/70 text-xs font-semibold tracking-widest uppercase">
-              <Sparkles size={14} className="text-blue-400" />
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-amber-mid)] bg-[var(--color-amber-subtle)] text-[var(--color-amber-hover)] text-xs font-semibold tracking-widest uppercase">
+              <Sparkles size={14} className="text-[var(--color-amber-primary)]" />
               Incubating The Future
             </span>
           </motion.div>
@@ -532,22 +532,22 @@ export default function Hero() {
             <h1 className="sr-only">Entrepreneurship Cell at IISER Bhopal — Student Startup Incubator</h1>
             
             {/* Changed from h1 to h2 for semantic HTML, keeping exact styling */}
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-white font-serif tracking-tight">
-              <span className="block text-white/80 font-light italic">Turn Breakthroughs</span>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl leading-[1.03] text-[var(--color-slate-light)] font-serif tracking-tight">
+              <span className="block text-[var(--color-slate-medium)] font-light italic">Turn Breakthroughs</span>
               <span className="block font-medium mt-1">Into Businesses.</span>
             </h2>
 
             <div className="mt-8 flex items-center gap-4">
               {/* Changed from h2 to h3 to follow the h1 -> h2 -> h3 semantic flow */}
-              <h3 className="text-lg sm:text-xl text-white/70 font-light tracking-wide">
-                At <span className="font-semibold text-white/90">IISER Bhopal</span>
+              <h3 className="text-lg sm:text-xl text-[var(--color-slate-medium)] font-light tracking-wide">
+                At <span className="font-semibold text-[var(--color-slate-light)]">IISER Bhopal</span>
               </h3>
             </div>
           </motion.div>
 
           <motion.p
             variants={itemVariants}
-            className="text-lg text-white/50 leading-relaxed mb-10 max-w-lg font-light"
+            className="text-lg text-[var(--color-slate-medium)] leading-relaxed mb-10 max-w-lg font-light"
           >
             {/* ✅ SEO FIX: Pulls the keyword-rich text from siteConfig instead of hardcoded string */}
             {siteConfig.hero.subheadline}
@@ -556,14 +556,14 @@ export default function Hero() {
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             
             <Link href="#pitch">
-              <button className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-semibold text-sm transition-all hover:bg-cyan-400/20 shadow-[0_0_20px_rgba(34,211,238,0.15)] hover:shadow-[0_0_25px_rgba(34,211,238,0.25)]">
+              <button className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-[var(--color-amber-dim)] border border-[var(--color-amber-mid)] text-[var(--color-amber-hover)] font-semibold text-sm transition-all hover:bg-[rgba(245,158,11,0.2)] shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_28px_rgba(245,158,11,0.32)]">
                 Join the E-Cell
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
             
             <Link href="#vision">
-              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-white/15 text-white/80 font-medium text-sm hover:border-white/40 hover:text-white hover:bg-white/5 transition-all">
+              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-slate-light)] font-medium text-sm hover:border-[var(--color-border-glow)] hover:text-[var(--color-amber-hover)] hover:bg-[var(--color-amber-subtle)] transition-all">
                 Vision
               </button>
             </Link>
@@ -592,12 +592,12 @@ export default function Hero() {
           {siteConfig.hero.stats.map((stat, i) => (
             <div
               key={i}
-              className="bg-[#0f172a]/40 border border-cyan-400/10 rounded-xl py-5 px-3 flex flex-col items-center justify-center backdrop-blur-xl shadow-xl transition-all hover:border-cyan-400/20 hover:bg-[#0f172a]/60"
+              className="bg-[rgba(26,31,53,0.62)] border border-[var(--color-border)] rounded-xl py-5 px-3 flex flex-col items-center justify-center backdrop-blur-2xl shadow-[0_14px_35px_rgba(2,6,23,0.45)] transition-all hover:border-[var(--color-amber-mid)] hover:bg-[rgba(26,31,53,0.78)]"
             >
-              <div className="text-2xl sm:text-3xl font-black text-white/90 mb-1 tracking-tight">
+              <div className="text-2xl sm:text-3xl font-black text-[var(--color-slate-light)] mb-1 tracking-tight">
                 {stat.value}
               </div>
-              <div className="text-[10px] sm:text-xs font-mono tracking-widest uppercase text-white/40 text-center">
+              <div className="text-[10px] sm:text-xs font-mono tracking-widest uppercase text-[var(--color-slate-medium)] text-center">
                 {stat.label}
               </div>
             </div>

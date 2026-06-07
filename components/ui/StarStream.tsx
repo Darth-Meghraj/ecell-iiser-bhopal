@@ -52,7 +52,7 @@ export default function StarStream() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.8)"; 
+        ctx.fillStyle = "rgba(252, 211, 77, 0.82)"; 
         ctx.fill();
       }
     }
@@ -98,7 +98,7 @@ export default function StarStream() {
           
           if (distance < 80) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(34, 211, 238, ${0.15 - distance / 800})`;
+            ctx.strokeStyle = `rgba(245, 158, 11, ${0.18 - distance / 760})`;
             ctx.lineWidth = 0.6;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -112,7 +112,7 @@ export default function StarStream() {
         
         if (distanceMouse < 120) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(167, 139, 250, ${0.25 - distanceMouse / 720})`;
+          ctx.strokeStyle = `rgba(226, 232, 240, ${0.24 - distanceMouse / 760})`;
           ctx.lineWidth = 1;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(mouse.x, mouse.y);
